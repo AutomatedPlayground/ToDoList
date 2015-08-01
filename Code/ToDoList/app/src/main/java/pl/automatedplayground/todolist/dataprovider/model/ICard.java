@@ -12,5 +12,8 @@ public interface ICard<CONTENT> {
    public DateTime getTimeInserted();
    public String getTimeInsertedReadable();
    public CardType getType();
+   String getID();
+
+   void setData(String title, CONTENT content, String dateTime,String id);
 
 }

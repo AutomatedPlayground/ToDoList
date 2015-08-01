@@ -5,6 +5,11 @@ package pl.automatedplayground.todolist.dataprovider.model;
 */
 
 public class DoingCard extends ToDoCard {
+
+   DoingCard(){
+
+   }
+
    @Override
    public CardType getType() {
       return CardType.DOING;

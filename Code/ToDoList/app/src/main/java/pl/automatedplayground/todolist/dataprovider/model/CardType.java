@@ -18,4 +18,12 @@ public enum CardType {
                 return 0;
         }
     }
+
+    public static CardType fromId(int type) {
+        if (type==1)
+            return DOING;
+        if (type==2)
+            return DONE;
+        return TODO;
+    }
 }

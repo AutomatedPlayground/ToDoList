@@ -13,6 +13,8 @@ import org.joda.time.format.DateTimeFormat;
 
 import java.io.Serializable;
 
+import pl.automatedplayground.todolist.dataprovider.model.api.model.TrelloList;
+
 public class ToDoCard implements ICard<String>, Serializable {
 
     @SerializedName("Title")
@@ -21,6 +23,12 @@ public class ToDoCard implements ICard<String>, Serializable {
     protected String mContent;
     @SerializedName("Time")
     protected DateTime mDate;
+    protected String mID;
+
+    // block for creation
+    ToDoCard(){
+
+    }
 
     @Override
     public String getTitle() {
@@ -51,11 +59,25 @@ public class ToDoCard implements ICard<String>, Serializable {
         return CardType.TODO;
     }
 
-    public static ToDoCard createMockData(int i) {
-        ToDoCard card = new ToDoCard();
-        card.mTitle = "Tytuł " + (i + 1);
-        card.mContent = "Zawartość";
-        card.mDate = new DateTime();
-        return card;
+    @Override
+    public void setData(String title, String s, String dateTime,String id) {
+        mTitle = title;
+        mContent = s;
+        if (dateTime!=null)
+            mDate = DateTimeFormat.forPattern("hh:mm dd/MM/yyyy").parseDateTime(dateTime);
+        else
+            mDate = new DateTime();
+        mID = id;
+    }
+
+    @Override
+    public String getID(){
+        return mID;
+    }
+
+    public static ToDoCard createListCard(TrelloList trelloList) {
+        ToDoCard tmp = new ToDoCard();
+        tmp.setData(trelloList.getName(),"Opis",null,trelloList.getId());
+        return tmp;
     }
 }

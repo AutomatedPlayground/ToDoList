@@ -5,6 +5,7 @@ package pl.automatedplayground.todolist.dataprovider.model.api;/*
 
 import java.util.List;
 
+import pl.automatedplayground.todolist.dataprovider.model.api.model.TrelloCard;
 import pl.automatedplayground.todolist.dataprovider.model.api.model.TrelloList;
 import retrofit.Callback;
 import retrofit.http.GET;
@@ -17,4 +18,7 @@ public interface ApiInterface {
 
     @GET("/1/boards/{board}/lists")
     public void getBoardLists(@Path("board")String board,@Query("key")String key,Callback<List<TrelloList>> response);
+
+    @GET("/1/lists/{list}/cards")
+    public void getCardsForList(@Path("list")String list,@Query("key")String key,Callback<List<TrelloCard>> response);
 }

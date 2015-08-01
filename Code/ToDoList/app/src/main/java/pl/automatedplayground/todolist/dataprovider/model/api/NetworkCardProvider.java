@@ -4,18 +4,18 @@ package pl.automatedplayground.todolist.dataprovider.model.api;/*
 */
 
 import android.content.Context;
-import android.util.Log;
 
 import java.util.List;
 
 import pl.automatedplayground.todolist.configuration.ConfigFile;
+import pl.automatedplayground.todolist.dataprovider.model.api.model.TrelloCard;
 import pl.automatedplayground.todolist.dataprovider.model.api.model.TrelloList;
 import retrofit.Callback;
 import retrofit.ErrorHandler;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
-import retrofit.client.OkClient;
+import retrofit.android.AndroidLog;
 
 public class NetworkCardProvider implements ErrorHandler, RequestInterceptor {
     private static final String API_URL = "https://api.trello.com";
@@ -30,22 +30,17 @@ public class NetworkCardProvider implements ErrorHandler, RequestInterceptor {
     }
 
     public NetworkCardProvider initWithContext(Context ctx) {
-        RestAdapter restAdapter = new RestAdapter.Builder().setRequestInterceptor(this).setLog(new RestAdapter.Log() {
-            @Override
-            public void log(String message) {
-                Log.i("RETROFIT",message);
-            }
-        }).setErrorHandler(this)
+        RestAdapter restAdapter = new RestAdapter.Builder().setRequestInterceptor(this).setLogLevel(RestAdapter.LogLevel.FULL).setLog(new AndroidLog("RETROFIT")).setErrorHandler(this)
                 .setEndpoint(API_URL).build();
         apiInterface = restAdapter.create(ApiInterface.class);
         return this;
     }
 
-    public String getBoard(){
+    public String getBoard() {
         return ConfigFile.API_BOARD;
     }
 
-    public String getKey(){
+    public String getKey() {
         return ConfigFile.API_KEY;
     }
 
@@ -61,7 +56,19 @@ public class NetworkCardProvider implements ErrorHandler, RequestInterceptor {
 //        request.addQueryParam("board",getBoard());
     }
 
-    public void getLists(Callback<List<TrelloList>> trelloListCallback) {
-        apiInterface.getBoardLists(getBoard(),getKey(),trelloListCallback);
+    private void getLists(Callback<List<TrelloList>> trelloListCallback) {
+        apiInterface.getBoardLists(getBoard(), getKey(), trelloListCallback);
+    }
+
+    public void getToDoCards(Callback<List<TrelloCard>> outputCallback){
+        apiInterface.getCardsForList(ConfigFile.API_LIST_TODO, ConfigFile.API_KEY, outputCallback);
+    }
+
+    public void getDoingCards(Callback<List<TrelloCard>> outputCallback){
+        apiInterface.getCardsForList(ConfigFile.API_LIST_DOING,ConfigFile.API_KEY,outputCallback);
+    }
+
+    public void getDoneCards(Callback<List<TrelloCard>> outputCallback){
+        apiInterface.getCardsForList(ConfigFile.API_LIST_DONE,ConfigFile.API_KEY,outputCallback);
     }
 }

@@ -4,6 +4,7 @@ package pl.automatedplayground.todolist.fragments;
    Copyright (c) 2015 Automated Playground under Apache 2.0 License
 */
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -15,6 +16,7 @@ import pl.automatedplayground.todolist.base.interfaces.SimpleCallback;
 import pl.automatedplayground.todolist.base.interfaces.SimpleDataProvider;
 import pl.automatedplayground.todolist.dataprovider.model.ToDoCard;
 import pl.automatedplayground.todolist.dataprovider.model.api.NetworkCardProvider;
+import pl.automatedplayground.todolist.dataprovider.model.api.model.TrelloCard;
 import pl.automatedplayground.todolist.dataprovider.model.api.model.TrelloList;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -57,21 +59,12 @@ public class ToDoListFragment extends ACardListFragment<ToDoCard, SimpleDataProv
 
     @Override
     public void refreshData(final SimpleCallback<ArrayList<ToDoCard>> simpleCallback) {
-//      Timer timer = new Timer();
-//      timer.schedule(new TimerTask() {
-//         @Override
-//         public void run() {
-//            ArrayList<ToDoCard> tmp = new ArrayList<>();
-////            for (int i=0;i<50;i++)
-////               tmp.add(ToDoCard.createMockData(i));
-//            simpleCallback.onCallback(tmp);
-//         }
-//      },5000);
-        NetworkCardProvider.getInstance().getLists(new Callback<List<TrelloList>>() {
+        NetworkCardProvider.getInstance().getToDoCards(new Callback<List<TrelloCard>>() {
             @Override
-            public void success(List<TrelloList> trelloList, Response response) {
+            public void success(List<TrelloCard> trelloList, Response response) {
+                Log.i("TAG", response.getBody().toString());
                 ArrayList<ToDoCard> tmp = new ArrayList<ToDoCard>();
-                for (int i=0;i<trelloList.size();i++)
+                for (int i = 0; i < trelloList.size(); i++)
                     tmp.add(ToDoCard.createListCard(trelloList.get(i)));
                 simpleCallback.onCallback(tmp);
             }

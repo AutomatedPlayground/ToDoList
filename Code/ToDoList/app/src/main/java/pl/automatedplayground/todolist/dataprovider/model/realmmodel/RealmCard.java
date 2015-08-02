@@ -1,4 +1,4 @@
-package pl.automatedplayground.todolist.dataprovider.model.realmodel;
+package pl.automatedplayground.todolist.dataprovider.model.realmmodel;
 /*
    Created by Adrian Skupień (automatedplayground@gmail.com) on 01.08.15.
    Copyright (c) 2015 Automated Playground under Apache 2.0 License
@@ -8,7 +8,6 @@ import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 public class RealmCard extends RealmObject {
-    @PrimaryKey
     private String ID;
     private String title;
     private String content;

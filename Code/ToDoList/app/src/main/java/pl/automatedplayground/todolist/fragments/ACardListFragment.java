@@ -1,4 +1,4 @@
-package pl.automatedplayground.todolist.base;
+package pl.automatedplayground.todolist.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,15 +9,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import pl.automatedplayground.todolist.R;
+import pl.automatedplayground.todolist.base.CardRecyclerViewAdapter;
 import pl.automatedplayground.todolist.base.interfaces.SimpleCallback;
 import pl.automatedplayground.todolist.base.interfaces.SimpleDataProvider;
-import pl.automatedplayground.todolist.dataprovider.model.ICard;
+import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.ICard;
 
 /*
    Created by Adrian Skupień (automatedplayground@gmail.com) on 01.08.15.
@@ -62,9 +64,13 @@ public abstract class ACardListFragment<DATATYPE extends ICard<?>, DATAPROVIDER 
                         mListView.post(new Runnable() {
                             @Override
                             public void run() {
-                                ((CardRecyclerViewAdapter) mListView.getAdapter()).setData(obj);
+                                if (obj == null)
+                                    Toast.makeText(getActivity(), R.string.hello_world, Toast.LENGTH_SHORT).show();
+                                else {
+                                    ((CardRecyclerViewAdapter) mListView.getAdapter()).setData(obj);
+                                    mListView.getAdapter().notifyDataSetChanged();
+                                }
                                 mRefresh.setRefreshing(false);
-                                mListView.getAdapter().notifyDataSetChanged();
                             }
                         });
                     }
@@ -83,9 +89,13 @@ public abstract class ACardListFragment<DATATYPE extends ICard<?>, DATAPROVIDER 
                 mListView.post(new Runnable() {
                     @Override
                     public void run() {
-                        ((CardRecyclerViewAdapter) mListView.getAdapter()).setData(obj);
+                        if (obj == null)
+                            Toast.makeText(getActivity(), R.string.hello_world, Toast.LENGTH_SHORT).show();
+                        else {
+                            ((CardRecyclerViewAdapter) mListView.getAdapter()).setData(obj);
+                            mListView.getAdapter().notifyDataSetChanged();
+                        }
                         mRefresh.setRefreshing(false);
-                        mListView.getAdapter().notifyDataSetChanged();
                     }
                 });
             }

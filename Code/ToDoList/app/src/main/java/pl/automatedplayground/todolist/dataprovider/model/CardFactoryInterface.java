@@ -8,6 +8,14 @@ import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 
+import pl.automatedplayground.todolist.base.interfaces.SimpleCallback;
+import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.CardType;
+import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.DoingCard;
+import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.DoneCard;
+import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.ICard;
+import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.ToDoCard;
+import retrofit.Callback;
+
 /**
  * Public visible functions
  */
@@ -15,33 +23,27 @@ public interface CardFactoryInterface{
    /**
     * Get all cards for 1st list
     * @return
+    * @param output
     */
-   ArrayList<ICard<String>> getAllCardsForTODOList();
+   void getAllCardsForTODOList(SimpleCallback<ArrayList<ToDoCard>> output);
 
    /**
     * Get all cards for second list
     * @return
     */
-   ArrayList<ICard<String>> getAllCardsForDoingList();
+   void getAllCardsForDoingList(SimpleCallback<ArrayList<DoingCard>> output);
 
    /**
     * Get all cards for third list
     * @return
     */
-   ArrayList<ICard<String>> getAllCardsForDoneList();
-
-   /**
-    * Update card in database
-    * @param source
-    * @return false if object dont exist in db
-    */
-   boolean updateCardInDb(ICard<String> source);
+   void getAllCardsForDoneList(SimpleCallback<ArrayList<DoneCard>> output);
 
    /**
     * Create new card in DB using source and return updated object
     * @return
     */
-   ICard<String> createNewCardInDB(String title,String content,DateTime dateForCard,CardType listToAdd);
+   void createNewCard(String title,String content,DateTime dateForCard,CardType listToAdd, Callback<ICard<String>> onReturn);
 
    /**
     * Move card to other list - or remove if null as param
@@ -49,5 +51,19 @@ public interface CardFactoryInterface{
     * @param newRequestedType
     * @return
     */
-   ICard<String> changeCardType(ICard<String> source,CardType newRequestedType);
+   void changeCardType(ICard<String> source,CardType newRequestedType, Callback<ICard<String>> onReturn);
+
+   /**
+    * Update card info - content and name
+    * @param source
+    * @return
+    */
+   void changeCardData(ICard<String> source, Callback<ICard<String>> onReturn);
+
+   /**
+    * Remove card
+    * @param source
+    * @return
+    */
+   void removeCard(ICard<String> source, Callback<Boolean> onReturn);
 }

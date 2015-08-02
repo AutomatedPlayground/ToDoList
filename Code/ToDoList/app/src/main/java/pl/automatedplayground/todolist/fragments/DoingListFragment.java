@@ -7,11 +7,10 @@ import android.view.View;
 
 import java.util.ArrayList;
 
-import pl.automatedplayground.todolist.base.ACardListFragment;
 import pl.automatedplayground.todolist.base.interfaces.SimpleCallback;
 import pl.automatedplayground.todolist.base.interfaces.SimpleDataProvider;
 import pl.automatedplayground.todolist.configuration.ConfigFile;
-import pl.automatedplayground.todolist.dataprovider.model.DoingCard;
+import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.DoingCard;
 
 public class DoingListFragment extends ACardListFragment<DoingCard,SimpleDataProvider<DoingCard>> implements SimpleDataProvider<DoingCard> {
    @Override

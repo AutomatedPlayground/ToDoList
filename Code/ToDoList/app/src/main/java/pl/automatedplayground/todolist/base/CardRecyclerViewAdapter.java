@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import pl.automatedplayground.todolist.R;
 import pl.automatedplayground.todolist.base.interfaces.SimpleCallback;
 import pl.automatedplayground.todolist.base.interfaces.SimpleDataProvider;
-import pl.automatedplayground.todolist.dataprovider.model.ICard;
+import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.ICard;
 
 public class CardRecyclerViewAdapter<DATATYPE extends ICard<?>, DATAPROVIDER extends SimpleDataProvider<DATATYPE>> extends RecyclerView.Adapter<CardViewHolder> {
 
@@ -47,7 +47,6 @@ public class CardRecyclerViewAdapter<DATATYPE extends ICard<?>, DATAPROVIDER ext
         DATATYPE data = mData.get(position);
         holder.mContent.setText(data.getContent().toString());
         holder.mTitle.setText(data.getTitle());
-        holder.mDate.setText(data.getTimeInsertedReadable());
         holder.position = position;
     }
 

@@ -8,7 +8,7 @@ import android.app.Application;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
-import pl.automatedplayground.todolist.dataprovider.model.CardFactory;
+import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.CardFactory;
 import pl.automatedplayground.todolist.dataprovider.model.api.NetworkCardProvider;
 
 public class ToDoListApplication extends Application {
@@ -17,6 +17,7 @@ public class ToDoListApplication extends Application {
         super.onCreate();
         JodaTimeAndroid.init(this);
         ((CardFactory) CardFactory.getInstance()).setContext(this);
+        ((CardFactory) CardFactory.getInstance()).tryToUpdateWithServer();
         NetworkCardProvider.getInstance().initWithContext(this);
     }
 }

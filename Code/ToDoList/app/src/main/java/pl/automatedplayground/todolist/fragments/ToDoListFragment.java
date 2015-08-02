@@ -4,22 +4,15 @@ package pl.automatedplayground.todolist.fragments;
    Copyright (c) 2015 Automated Playground under Apache 2.0 License
 */
 
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import pl.automatedplayground.todolist.base.ACardListFragment;
 import pl.automatedplayground.todolist.base.interfaces.SimpleCallback;
 import pl.automatedplayground.todolist.base.interfaces.SimpleDataProvider;
-import pl.automatedplayground.todolist.dataprovider.model.ToDoCard;
-import pl.automatedplayground.todolist.dataprovider.model.api.NetworkCardProvider;
-import pl.automatedplayground.todolist.dataprovider.model.api.model.TrelloCard;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.CardFactory;
+import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.ToDoCard;
 
 public class ToDoListFragment extends ACardListFragment<ToDoCard, SimpleDataProvider<ToDoCard>> implements SimpleDataProvider<ToDoCard> {
 
@@ -60,28 +53,7 @@ public class ToDoListFragment extends ACardListFragment<ToDoCard, SimpleDataProv
 //            @Override
 //            public void success(TrelloCard trelloCards, Response response) {
 
-        NetworkCardProvider.getInstance().getToDoCards(new Callback<List<TrelloCard>>() {
-            @Override
-            public void success(List<TrelloCard> trelloList, Response response) {
-                Log.i("TAG", response.getBody().toString());
-                ArrayList<ToDoCard> tmp = new ArrayList<ToDoCard>();
-                for (int i = 0; i < trelloList.size(); i++)
-                    tmp.add(ToDoCard.createListCard(trelloList.get(i)));
-                simpleCallback.onCallback(tmp);
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-
-            }
-        });
-//            }
-//
-//            @Override
-//            public void failure(RetrofitError error) {
-//
-//            }
-//        });
+        CardFactory.getInstance().getAllCardsForTODOList(simpleCallback);
     }
 
 

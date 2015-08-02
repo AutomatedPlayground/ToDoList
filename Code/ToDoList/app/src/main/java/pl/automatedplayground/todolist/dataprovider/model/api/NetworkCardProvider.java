@@ -27,11 +27,11 @@ public class NetworkCardProvider implements ErrorHandler, RequestInterceptor {
     private static NetworkCardProvider ourInstance = new NetworkCardProvider();
     private ApiInterface apiInterface;
 
-    public static NetworkCardProvider getInstance() {
-        return ourInstance;
+    private NetworkCardProvider() {
     }
 
-    private NetworkCardProvider() {
+    public static NetworkCardProvider getInstance() {
+        return ourInstance;
     }
 
     public NetworkCardProvider initWithContext(Context ctx) {

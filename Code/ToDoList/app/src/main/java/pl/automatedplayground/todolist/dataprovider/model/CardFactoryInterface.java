@@ -19,51 +19,58 @@ import retrofit.Callback;
 /**
  * Public visible functions
  */
-public interface CardFactoryInterface{
-   /**
-    * Get all cards for 1st list
-    * @return
-    * @param output
-    */
-   void getAllCardsForTODOList(SimpleCallback<ArrayList<ToDoCard>> output);
+public interface CardFactoryInterface {
+    /**
+     * Get all cards for 1st list
+     *
+     * @param output
+     * @return
+     */
+    void getAllCardsForTODOList(SimpleCallback<ArrayList<ToDoCard>> output);
 
-   /**
-    * Get all cards for second list
-    * @return
-    */
-   void getAllCardsForDoingList(SimpleCallback<ArrayList<DoingCard>> output);
+    /**
+     * Get all cards for second list
+     *
+     * @return
+     */
+    void getAllCardsForDoingList(SimpleCallback<ArrayList<DoingCard>> output);
 
-   /**
-    * Get all cards for third list
-    * @return
-    */
-   void getAllCardsForDoneList(SimpleCallback<ArrayList<DoneCard>> output);
+    /**
+     * Get all cards for third list
+     *
+     * @return
+     */
+    void getAllCardsForDoneList(SimpleCallback<ArrayList<DoneCard>> output);
 
-   /**
-    * Create new card in DB using source and return updated object
-    * @return
-    */
-   void createNewCard(String title,String content,DateTime dateForCard,CardType listToAdd, Callback<ICard<String>> onReturn);
+    /**
+     * Create new card in DB using source and return updated object
+     *
+     * @return
+     */
+    void createNewCard(String title, String content, DateTime dateForCard, CardType listToAdd, Callback<ICard<String>> onReturn);
 
-   /**
-    * Move card to other list - or remove if null as param
-    * @param source
-    * @param newRequestedType
-    * @return
-    */
-   void changeCardType(ICard<String> source,CardType newRequestedType, Callback<ICard<String>> onReturn);
+    /**
+     * Move card to other list - or remove if null as param
+     *
+     * @param source
+     * @param newRequestedType
+     * @return
+     */
+    void changeCardType(ICard<String> source, CardType newRequestedType, Callback<ICard<String>> onReturn);
 
-   /**
-    * Update card info - content and name
-    * @param source
-    * @return
-    */
-   void changeCardData(ICard<String> source, Callback<ICard<String>> onReturn);
+    /**
+     * Update card info - content and name
+     *
+     * @param source
+     * @return
+     */
+    void changeCardData(ICard<String> source, Callback<ICard<String>> onReturn);
 
-   /**
-    * Remove card
-    * @param source
-    * @return
-    */
-   void removeCard(ICard<String> source, Callback<Boolean> onReturn);
+    /**
+     * Remove card
+     *
+     * @param source
+     * @return
+     */
+    void removeCard(ICard<String> source, Callback<Boolean> onReturn);
 }

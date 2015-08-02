@@ -5,5 +5,5 @@ package pl.automatedplayground.todolist.base.interfaces;
 */
 
 public interface SimpleCallback<CALLBACKOBJ> {
-   void onCallback(CALLBACKOBJ obj);
+    void onCallback(CALLBACKOBJ obj);
 }

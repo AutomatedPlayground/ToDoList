@@ -5,7 +5,6 @@ package pl.automatedplayground.todolist.dataprovider.model.realmmodel;
 */
 
 import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
 
 public class RealmCard extends RealmObject {
     private String ID;

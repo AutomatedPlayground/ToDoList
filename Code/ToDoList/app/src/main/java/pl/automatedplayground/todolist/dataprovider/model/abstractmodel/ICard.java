@@ -5,13 +5,16 @@ package pl.automatedplayground.todolist.dataprovider.model.abstractmodel;
 */
 
 public interface ICard<CONTENT> {
-   public String getTitle();
-   public CONTENT getContent();
-//   public DateTime getTimeInserted();
-//   public String getTimeInsertedReadable();
-   public CardType getType();
-   String getID();
+    public String getTitle();
 
-   void setData(String title, CONTENT content,String id);
+    public CONTENT getContent();
+
+    //   public DateTime getTimeInserted();
+//   public String getTimeInsertedReadable();
+    public CardType getType();
+
+    String getID();
+
+    void setData(String title, CONTENT content, String id);
 
 }

@@ -6,11 +6,6 @@ package pl.automatedplayground.todolist.dataprovider.model.abstractmodel;
 
 import android.text.TextUtils;
 
-import com.google.gson.annotations.SerializedName;
-
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-
 import java.io.Serializable;
 
 import pl.automatedplayground.todolist.dataprovider.model.api.model.TrelloCard;
@@ -22,8 +17,14 @@ public class ToDoCard implements ICard<String>, Serializable {
     protected String mID;
 
     // block for creation
-    ToDoCard(){
+    ToDoCard() {
 
+    }
+
+    public static ToDoCard createListCard(TrelloCard trelloList) {
+        ToDoCard tmp = new ToDoCard();
+        tmp.setData(trelloList.getName(), trelloList.getDescription(), trelloList.getId());
+        return tmp;
     }
 
     @Override
@@ -44,20 +45,14 @@ public class ToDoCard implements ICard<String>, Serializable {
     }
 
     @Override
-    public void setData(String title, String s,String id) {
+    public void setData(String title, String s, String id) {
         mTitle = title;
         mContent = s;
         mID = id;
     }
 
     @Override
-    public String getID(){
+    public String getID() {
         return mID;
-    }
-
-    public static ToDoCard createListCard(TrelloCard trelloList) {
-        ToDoCard tmp = new ToDoCard();
-        tmp.setData(trelloList.getName(),trelloList.getDescription(),trelloList.getId());
-        return tmp;
     }
 }

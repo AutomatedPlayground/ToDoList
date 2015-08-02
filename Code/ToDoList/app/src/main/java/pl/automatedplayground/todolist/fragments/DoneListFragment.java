@@ -14,38 +14,38 @@ import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.DoneCard
 
 public class DoneListFragment extends ACardListFragment<DoneCard, SimpleDataProvider<DoneCard>> implements SimpleDataProvider<DoneCard> {
 
-   @Override
-   protected View.OnClickListener createOnAddClicked() {
-      return new View.OnClickListener() {
-         @Override
-         public void onClick(View v) {
+    @Override
+    protected View.OnClickListener createOnAddClicked() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-         }
-      };
-   }
+            }
+        };
+    }
 
-   @Override
-   protected boolean isAddAvaiable() {
-      return ConfigFile.SHOW_ADDBUTTON_ON_ALLVIEWS;
-   }
+    @Override
+    protected boolean isAddAvaiable() {
+        return ConfigFile.SHOW_ADDBUTTON_ON_ALLVIEWS;
+    }
 
-   @Override
-   protected SimpleDataProvider<DoneCard> createDataProvider() {
-      return this;
-   }
+    @Override
+    protected SimpleDataProvider<DoneCard> createDataProvider() {
+        return this;
+    }
 
-   @Override
-   public void onCallback(DoneCard obj) {
+    @Override
+    public void onCallback(DoneCard obj) {
 
-   }
+    }
 
-   @Override
-   public ArrayList<DoneCard> getDataForView() {
-      return null;
-   }
+    @Override
+    public ArrayList<DoneCard> getDataForView() {
+        return null;
+    }
 
-   @Override
-   public void refreshData(SimpleCallback<ArrayList<DoneCard>> simpleCallback) {
+    @Override
+    public void refreshData(SimpleCallback<ArrayList<DoneCard>> simpleCallback) {
 
-   }
+    }
 }

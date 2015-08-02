@@ -12,14 +12,14 @@ public class DoneCard extends ToDoCard {
         super();
     }
 
-    @Override
-    public CardType getType() {
-        return CardType.DONE;
-    }
-
     public static DoneCard createListCard(TrelloCard trelloList) {
         DoneCard tmp = new DoneCard();
         tmp.setData(trelloList.getName(), trelloList.getDescription(), trelloList.getId());
         return tmp;
+    }
+
+    @Override
+    public CardType getType() {
+        return CardType.DONE;
     }
 }

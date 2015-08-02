@@ -7,6 +7,14 @@ package pl.automatedplayground.todolist.dataprovider.model.abstractmodel;
 public enum CardType {
     TODO, DOING, DONE;
 
+    public static CardType fromId(int type) {
+        if (type == 1)
+            return DOING;
+        if (type == 2)
+            return DONE;
+        return TODO;
+    }
+
     public int toInt() {
         switch (this) {
             case DOING:
@@ -17,13 +25,5 @@ public enum CardType {
             default:
                 return 0;
         }
-    }
-
-    public static CardType fromId(int type) {
-        if (type==1)
-            return DOING;
-        if (type==2)
-            return DONE;
-        return TODO;
     }
 }

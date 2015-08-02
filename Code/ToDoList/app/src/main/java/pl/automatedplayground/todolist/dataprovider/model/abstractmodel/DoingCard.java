@@ -8,18 +8,18 @@ import pl.automatedplayground.todolist.dataprovider.model.api.model.TrelloCard;
 
 public class DoingCard extends ToDoCard {
 
-   DoingCard(){
+    DoingCard() {
 
-   }
+    }
 
-   @Override
-   public CardType getType() {
-      return CardType.DOING;
-   }
+    public static DoingCard createListCard(TrelloCard trelloList) {
+        DoingCard tmp = new DoingCard();
+        tmp.setData(trelloList.getName(), trelloList.getDescription(), trelloList.getId());
+        return tmp;
+    }
 
-   public static DoingCard createListCard(TrelloCard trelloList) {
-      DoingCard tmp = new DoingCard();
-      tmp.setData(trelloList.getName(), trelloList.getDescription(), trelloList.getId());
-      return tmp;
-   }
+    @Override
+    public CardType getType() {
+        return CardType.DOING;
+    }
 }

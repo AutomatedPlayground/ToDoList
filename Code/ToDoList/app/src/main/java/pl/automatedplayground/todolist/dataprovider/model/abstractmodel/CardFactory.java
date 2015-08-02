@@ -27,6 +27,9 @@ public class CardFactory implements CardFactoryInterface {
     private static CardFactory ourInstance = new CardFactory();
     private Context mContext;
 
+    private CardFactory() {
+    }
+
     /**
      * We isolate avaiable functions using class interface
      *
@@ -34,9 +37,6 @@ public class CardFactory implements CardFactoryInterface {
      */
     public static CardFactoryInterface getInstance() {
         return ourInstance;
-    }
-
-    private CardFactory() {
     }
 
     /**

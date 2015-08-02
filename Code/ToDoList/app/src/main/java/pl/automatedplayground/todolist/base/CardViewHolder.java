@@ -14,13 +14,13 @@ import pl.automatedplayground.todolist.base.interfaces.SimpleCallback;
 
 public class CardViewHolder extends RecyclerView.ViewHolder {
 
+    public int position;
     @InjectView(R.id.row_title)
     protected TextView mTitle;
     @InjectView(R.id.row_content)
     protected TextView mContent;
     @InjectView(R.id.row_date)
     protected TextView mDate;
-    public int position;
 
     public CardViewHolder(View view, final SimpleCallback<Integer> onActionClicked) {
         super(view);

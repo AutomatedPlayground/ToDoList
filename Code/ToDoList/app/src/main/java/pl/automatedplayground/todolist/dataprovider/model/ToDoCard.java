@@ -81,4 +81,10 @@ public class ToDoCard implements ICard<String>, Serializable {
         tmp.setData(trelloList.getName(),trelloList.getDescription(),trelloList.getDateLastActivity(),trelloList.getId());
         return tmp;
     }
+
+    public static ToDoCard createMockCard(int i) {
+        ToDoCard tmp = new ToDoCard();
+        tmp.setData("Nazwa "+i,"Opis karty\nOpis karty 2",null,null);
+        return tmp;
+    }
 }

@@ -8,50 +8,41 @@ import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 public class RealmCard extends RealmObject {
-   @PrimaryKey
-   private String  ID;
-   private String title;
-   private String content;
-   private String dateTime;
-   private int type;
+    @PrimaryKey
+    private String ID;
+    private String title;
+    private String content;
+    private int type;
 
-   public String  getID() {
-      return ID;
-   }
+    public String getID() {
+        return ID;
+    }
 
-   public void setID(String mID) {
-      this.ID = mID;
-   }
+    public void setID(String mID) {
+        this.ID = mID;
+    }
 
-   public String getTitle() {
-      return title;
-   }
+    public String getTitle() {
+        return title;
+    }
 
-   public void setTitle(String mTitle) {
-      this.title = mTitle;
-   }
+    public void setTitle(String mTitle) {
+        this.title = mTitle;
+    }
 
-   public String getContent() {
-      return content;
-   }
+    public String getContent() {
+        return content;
+    }
 
-   public void setContent(String mContent) {
-      this.content = mContent;
-   }
+    public void setContent(String mContent) {
+        this.content = mContent;
+    }
 
-   public String getDateTime() {
-      return dateTime;
-   }
+    public int getType() {
+        return type;
+    }
 
-   public void setDateTime(String mDateTime) {
-      this.dateTime = mDateTime;
-   }
-
-   public int getType(){
-      return type;
-   }
-
-   public void setType(int nType){
-      type = nType;
-   }
+    public void setType(int nType) {
+        type = nType;
+    }
 }

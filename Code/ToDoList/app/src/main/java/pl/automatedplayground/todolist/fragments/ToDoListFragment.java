@@ -17,7 +17,6 @@ import pl.automatedplayground.todolist.base.interfaces.SimpleDataProvider;
 import pl.automatedplayground.todolist.dataprovider.model.ToDoCard;
 import pl.automatedplayground.todolist.dataprovider.model.api.NetworkCardProvider;
 import pl.automatedplayground.todolist.dataprovider.model.api.model.TrelloCard;
-import pl.automatedplayground.todolist.dataprovider.model.api.model.TrelloList;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -52,13 +51,15 @@ public class ToDoListFragment extends ACardListFragment<ToDoCard, SimpleDataProv
     @Override
     public ArrayList<ToDoCard> getDataForView() {
         ArrayList<ToDoCard> tmp = new ArrayList<>();
-//      for (int i=0;i<50;i++)
-//         tmp.add(ToDoCard.createMockData(i));
         return tmp;
     }
 
     @Override
     public void refreshData(final SimpleCallback<ArrayList<ToDoCard>> simpleCallback) {
+//        NetworkCardProvider.getInstance().putCard(ToDoCard.createMockCard(0), new Callback<TrelloCard>() {
+//            @Override
+//            public void success(TrelloCard trelloCards, Response response) {
+
         NetworkCardProvider.getInstance().getToDoCards(new Callback<List<TrelloCard>>() {
             @Override
             public void success(List<TrelloCard> trelloList, Response response) {
@@ -74,6 +75,13 @@ public class ToDoListFragment extends ACardListFragment<ToDoCard, SimpleDataProv
 
             }
         });
+//            }
+//
+//            @Override
+//            public void failure(RetrofitError error) {
+//
+//            }
+//        });
     }
 
 

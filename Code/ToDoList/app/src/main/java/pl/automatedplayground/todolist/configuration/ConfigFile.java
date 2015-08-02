@@ -35,6 +35,11 @@ public class ConfigFile {
     public static final String API_LIST_DONE = "55bd42829576c385e44161da";
 
     /**
+     * Api Token
+     */
+    public static final String API_TOKEN = "ba743c43659168851a81a463bd7bd62423756c4c2af96cf1a0a1b05be4c01622";
+
+    /**
      * If this will be enabled, user will have possibility to add task on any list
      */
     public static boolean SHOW_ADDBUTTON_ON_ALLVIEWS = false;

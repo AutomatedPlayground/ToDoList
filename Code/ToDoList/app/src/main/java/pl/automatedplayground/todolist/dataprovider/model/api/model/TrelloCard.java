@@ -13,8 +13,8 @@ public class TrelloCard {
     protected String description;
     @SerializedName("name")
     protected String name;
-    @SerializedName("dateLastActivity")
-    private String dateLastActivity;
+//    @SerializedName("dateLastActivity")
+//    private String dateLastActivity;
 
 
     public String getId() {
@@ -41,7 +41,7 @@ public class TrelloCard {
         this.name = name;
     }
 
-    public String getDateLastActivity() {
-        return dateLastActivity;
-    }
+//    public String getDateLastActivity() {
+//        return dateLastActivity;
+//    }
 }

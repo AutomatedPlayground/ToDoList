@@ -75,17 +75,35 @@ public abstract class ACardListFragment<DATATYPE extends ICard<?>, DATAPROVIDER 
         mAddButton.setVisibility(isAddAvaiable() ? View.VISIBLE : View.INVISIBLE);
         mAddButton.setOnClickListener(createOnAddClicked());
 
+        mDataProvider.refreshData(new SimpleCallback<ArrayList<DATATYPE>>() {
+
+            @Override
+            public void onCallback(final ArrayList<DATATYPE> obj) {
+                // it need to be done on ui thread
+                mListView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((CardRecyclerViewAdapter) mListView.getAdapter()).setData(obj);
+                        mRefresh.setRefreshing(false);
+                        mListView.getAdapter().notifyDataSetChanged();
+                    }
+                });
+            }
+        });
+
         return view;
     }
 
     /**
      * Get on add button click listener
+     *
      * @return
      */
     protected abstract View.OnClickListener createOnAddClicked();
 
     /**
      * Should user see button "add"?
+     *
      * @return
      */
     protected abstract boolean isAddAvaiable();

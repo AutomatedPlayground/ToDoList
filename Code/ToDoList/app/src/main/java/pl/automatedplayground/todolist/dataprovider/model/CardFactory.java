@@ -57,7 +57,7 @@ public class CardFactory implements CardFactoryInterface {
                 output = new ToDoCard();
                 break;
         }
-        output.setData(card.getTitle(),card.getContent(),card.getDateTime(),card.getID());
+        output.setData(card.getTitle(),card.getContent(),card.getID());
         return output;
     }
 
@@ -95,7 +95,6 @@ public class CardFactory implements CardFactoryInterface {
         RealmCard card = realm.createObject(RealmCard.class);
         card.setTitle(title);
         card.setContent(content);
-        card.setDateTime(DateTimeFormat.forPattern("hh:mm dd/MM/yyyy").print(dateForCard));
         card.setType(listToAdd.toInt());
         realm.commitTransaction();
         return getCardFromRealmObject(card);

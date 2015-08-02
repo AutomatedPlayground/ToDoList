@@ -4,16 +4,14 @@ package pl.automatedplayground.todolist.dataprovider.model;
    Copyright (c) 2015 Automated Playground under Apache 2.0 License
 */
 
-import org.joda.time.DateTime;
-
 public interface ICard<CONTENT> {
    public String getTitle();
    public CONTENT getContent();
-   public DateTime getTimeInserted();
-   public String getTimeInsertedReadable();
+//   public DateTime getTimeInserted();
+//   public String getTimeInsertedReadable();
    public CardType getType();
    String getID();
 
-   void setData(String title, CONTENT content, String dateTime,String id);
+   void setData(String title, CONTENT content,String id);
 
 }

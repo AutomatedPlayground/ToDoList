@@ -4,10 +4,14 @@ package pl.automatedplayground.todolist.dataprovider.model.api;/*
 */
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.List;
 
 import pl.automatedplayground.todolist.configuration.ConfigFile;
+import pl.automatedplayground.todolist.dataprovider.model.DoingCard;
+import pl.automatedplayground.todolist.dataprovider.model.DoneCard;
+import pl.automatedplayground.todolist.dataprovider.model.ToDoCard;
 import pl.automatedplayground.todolist.dataprovider.model.api.model.TrelloCard;
 import pl.automatedplayground.todolist.dataprovider.model.api.model.TrelloList;
 import retrofit.Callback;
@@ -30,7 +34,7 @@ public class NetworkCardProvider implements ErrorHandler, RequestInterceptor {
     }
 
     public NetworkCardProvider initWithContext(Context ctx) {
-        RestAdapter restAdapter = new RestAdapter.Builder().setRequestInterceptor(this).setLogLevel(RestAdapter.LogLevel.FULL).setLog(new AndroidLog("RETROFIT")).setErrorHandler(this)
+        RestAdapter restAdapter = new RestAdapter.Builder().setLogLevel(RestAdapter.LogLevel.FULL).setLog(new AndroidLog("RETROFIT")).setErrorHandler(this).setRequestInterceptor(this)
                 .setEndpoint(API_URL).build();
         apiInterface = restAdapter.create(ApiInterface.class);
         return this;
@@ -46,29 +50,40 @@ public class NetworkCardProvider implements ErrorHandler, RequestInterceptor {
 
     @Override
     public Throwable handleError(RetrofitError cause) {
+        Log.i("RETROFIT","ERRO:"+cause.toString());
         return new Throwable(cause);
-    }
-
-    @Override
-    public void intercept(RequestFacade request) {
-
-//        request.addQueryParam("key",getKey());
-//        request.addQueryParam("board",getBoard());
     }
 
     private void getLists(Callback<List<TrelloList>> trelloListCallback) {
         apiInterface.getBoardLists(getBoard(), getKey(), trelloListCallback);
     }
 
-    public void getToDoCards(Callback<List<TrelloCard>> outputCallback){
+    public void getToDoCards(Callback<List<TrelloCard>> outputCallback) {
         apiInterface.getCardsForList(ConfigFile.API_LIST_TODO, ConfigFile.API_KEY, outputCallback);
     }
 
-    public void getDoingCards(Callback<List<TrelloCard>> outputCallback){
-        apiInterface.getCardsForList(ConfigFile.API_LIST_DOING,ConfigFile.API_KEY,outputCallback);
+    public void getDoingCards(Callback<List<TrelloCard>> outputCallback) {
+        apiInterface.getCardsForList(ConfigFile.API_LIST_DOING, ConfigFile.API_KEY, outputCallback);
     }
 
-    public void getDoneCards(Callback<List<TrelloCard>> outputCallback){
-        apiInterface.getCardsForList(ConfigFile.API_LIST_DONE,ConfigFile.API_KEY,outputCallback);
+    public void getDoneCards(Callback<List<TrelloCard>> outputCallback) {
+        apiInterface.getCardsForList(ConfigFile.API_LIST_DONE, ConfigFile.API_KEY, outputCallback);
+    }
+
+    public void putCard(ToDoCard mCard, Callback<TrelloCard> outputCallback) {
+        apiInterface.putCardIntoList(ConfigFile.API_KEY,ConfigFile.API_LIST_TODO, mCard.getTitle(), mCard.getContent(),ConfigFile.API_TOKEN, outputCallback);
+    }
+
+    public void putCard(DoingCard mCard, Callback<TrelloCard> outputCallback) {
+        apiInterface.putCardIntoList(ConfigFile.API_KEY,ConfigFile.API_LIST_DOING, mCard.getTitle(), mCard.getContent(),ConfigFile.API_TOKEN, outputCallback);
+    }
+
+    public void putCard(DoneCard mCard, Callback<TrelloCard> outputCallback) {
+        apiInterface.putCardIntoList(ConfigFile.API_KEY,ConfigFile.API_LIST_DONE, mCard.getTitle(), mCard.getContent(),ConfigFile.API_TOKEN, outputCallback);
+    }
+
+    @Override
+    public void intercept(RequestFacade request) {
+        request.addHeader("content-type","application/json");
     }
 }

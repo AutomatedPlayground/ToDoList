@@ -128,7 +128,7 @@ public class CardLocalDatabaseTest extends ApplicationTestCase<Application> {
                                 CardFactory.getInstance().getAllCardsForTODOList(new SimpleCallback<ArrayList<ToDoCard>>() {
                                     @Override
                                     public void onCallback(ArrayList<ToDoCard> obj) {
-                                        assertTrue(obj==null || obj.size()==0);
+                                        assertTrue(obj == null || obj.size() == 0);
                                     }
                                 });
                             }
@@ -137,6 +137,45 @@ public class CardLocalDatabaseTest extends ApplicationTestCase<Application> {
                 });
 
 
+            }
+        });
+    }
+
+    /**
+     * Test name and description change
+     */
+    public void testNameChange(){
+        final String title = "title";
+        final String title2 = "title2";
+        final String desc = "desc";
+        final String desc2 = "desc2";
+        CardType type = CardType.TODO;
+        ((CardFactory) CardFactory.getInstance()).setContext(getContext());
+
+        // clear all database
+        Realm realm = Realm.getInstance(getContext());
+        realm.beginTransaction();
+        realm.clear(RealmCard.class);
+        realm.commitTransaction();
+
+        CardFactory.getInstance().createNewCard(title, desc, type, new SimpleCallback<ICard<String>>() {
+            @Override
+            public void onCallback(ICard<String> obj) {
+                final int localID = obj.getLocalID();
+                // get local card using getter
+                ToDoCard source = (ToDoCard) CardFactory.getInstance().getCardByLocalID(localID);
+                assertEquals(source.getTitle(),title);
+                assertEquals(source.getContent(),desc);
+                source.setData(localID,title2,desc2,"");
+                CardFactory.getInstance().changeCardData(source, new SimpleCallback<ICard<String>>() {
+                    @Override
+                    public void onCallback(ICard<String> obj) {
+                        // now get object from db and check names
+                        ToDoCard changedCard = (ToDoCard) CardFactory.getInstance().getCardByLocalID(localID);
+                        assertEquals(changedCard.getTitle(),title2);
+                        assertEquals(changedCard.getContent(),desc2);
+                    }
+                });
             }
         });
     }

@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import pl.automatedplayground.todolist.base.interfaces.SimpleCallback;
+import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.CardFactory;
 import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.CardType;
 import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.ICard;
 
@@ -42,6 +44,7 @@ public class CardDetailsFragment extends Fragment {
     boolean editable = false;
 
     ICard<String> localCard = null;
+    private CardType newCardType = CardType.TODO;
 
     public CardDetailsFragment() {
     }
@@ -52,8 +55,9 @@ public class CardDetailsFragment extends Fragment {
         return fragment;
     }
 
-    public static CardDetailsFragment createFragmentForCreateNew() {
+    public static CardDetailsFragment createFragmentForCreateNew(CardType newCardType) {
         CardDetailsFragment fragment = new CardDetailsFragment();
+        fragment.newCardType = newCardType;
         return fragment;
     }
 
@@ -103,12 +107,6 @@ public class CardDetailsFragment extends Fragment {
         return true;
     }
 
-    /**
-     * Remove current card from local database
-     */
-    private void remove() {
-
-    }
 
     private void bindData(ICard<String> card) {
         cardTitle.setText(card.getTitle());
@@ -159,17 +157,35 @@ public class CardDetailsFragment extends Fragment {
     private void saveEdit() {
         cardTitle.setText(cardTitleEditable.getText().toString());
         cardContent.setText(cardContentEditable.getText().toString());
-
-        // TODO: update data on database - if localcard==null, create new one
-        // TODO: send request to server with changes
-
-        if (localCard == null)
+        if (localCard!=null) {
+            // change card data
+            localCard.setData(localCard.getLocalID(),cardTitleEditable.getText().toString(),cardContentEditable.getText().toString(),localCard.getID());
+            CardFactory.getInstance().changeCardData(localCard, null);
+        }else{
+            // create new card
+            CardFactory.getInstance().createNewCard(cardTitleEditable.getText().toString(),cardContentEditable.getText().toString(),newCardType,null);
             getActivity().finish();
+        }
+
 
         modeView.setVisibility(View.VISIBLE);
         modeEdit.setVisibility(View.GONE);
         editable = false;
 
         getActivity().invalidateOptionsMenu();
+    }
+
+
+    /**
+     * Remove current card from local database
+     */
+    private void remove() {
+        CardFactory.getInstance().removeCard(localCard, new SimpleCallback<Boolean>() {
+            @Override
+            public void onCallback(Boolean obj) {
+
+            }
+        });
+        getActivity().finish();
     }
 }

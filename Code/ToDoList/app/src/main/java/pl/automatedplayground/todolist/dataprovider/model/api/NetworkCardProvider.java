@@ -96,4 +96,9 @@ public class NetworkCardProvider implements ErrorHandler, RequestInterceptor {
     public void intercept(RequestFacade request) {
         request.addHeader("content-type", "application/json");
     }
+
+    public void updateCard(ICard<String> card, Callback<TrelloCard> callback) {
+//        apiInterface
+//        apiInterface.updateCardData(Config)
+    }
 }

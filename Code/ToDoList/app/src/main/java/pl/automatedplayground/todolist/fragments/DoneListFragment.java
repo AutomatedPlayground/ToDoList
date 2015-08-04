@@ -3,13 +3,16 @@ package pl.automatedplayground.todolist.fragments;/*
    Copyright (c) 2015 Automated Playground under Apache 2.0 License
 */
 
+import android.content.Intent;
 import android.view.View;
 
 import java.util.ArrayList;
 
+import pl.automatedplayground.todolist.CardDetails;
 import pl.automatedplayground.todolist.base.interfaces.SimpleCallback;
 import pl.automatedplayground.todolist.base.interfaces.SimpleDataProvider;
 import pl.automatedplayground.todolist.configuration.ConfigFile;
+import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.CardType;
 import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.DoneCard;
 
 public class DoneListFragment extends ACardListFragment<DoneCard, SimpleDataProvider<DoneCard>> implements SimpleDataProvider<DoneCard> {
@@ -19,7 +22,9 @@ public class DoneListFragment extends ACardListFragment<DoneCard, SimpleDataProv
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(getActivity(), CardDetails.class);
+                intent.putExtra(CardDetails.INTENT_CARDTYPE, CardType.DONE.toInt());
+                startActivity(intent);
             }
         };
     }

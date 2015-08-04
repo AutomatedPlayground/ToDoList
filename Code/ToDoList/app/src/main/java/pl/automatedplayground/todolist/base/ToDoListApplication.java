@@ -17,7 +17,7 @@ public class ToDoListApplication extends Application {
         super.onCreate();
         JodaTimeAndroid.init(this);
         ((CardFactory) CardFactory.getInstance()).setContext(this);
-        ((CardFactory) CardFactory.getInstance()).tryToUpdateWithServer();
+//        ((CardFactory) CardFactory.getInstance()).tryToUpdateWithServer();
         NetworkCardProvider.getInstance().initWithContext(this);
     }
 }

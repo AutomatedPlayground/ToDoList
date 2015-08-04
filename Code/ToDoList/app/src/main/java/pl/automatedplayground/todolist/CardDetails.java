@@ -3,11 +3,13 @@ package pl.automatedplayground.todolist;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.CardType;
 import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.ICard;
 
 public class CardDetails extends AppCompatActivity {
 
     public static final String INTENT_CARD = "CARD_FOR_USE";
+    public static final String INTENT_CARDTYPE = "CARDTYPE_FOR_USE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,7 +19,7 @@ public class CardDetails extends AppCompatActivity {
             ICard<String> card = (ICard<String>) getIntent().getSerializableExtra(INTENT_CARD);
             getSupportFragmentManager().beginTransaction().add(R.id.fragmentarea, CardDetailsFragment.createFragmentForDetails(card)).commit();
         } else {
-            getSupportFragmentManager().beginTransaction().add(R.id.fragmentarea, CardDetailsFragment.createFragmentForCreateNew()).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.fragmentarea, CardDetailsFragment.createFragmentForCreateNew(CardType.fromId(getIntent().getIntExtra(INTENT_CARDTYPE, CardType.TODO.toInt())))).commit();
         }
     }
 

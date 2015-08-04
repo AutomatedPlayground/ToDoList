@@ -15,17 +15,19 @@ public class ToDoCard implements ICard<String>, Serializable {
     protected String mTitle;
     protected String mContent;
     protected String mID;
+    protected int localID;
+    protected boolean mModif = false;
 
     // block for creation
     ToDoCard() {
 
     }
 
-    public static ToDoCard createListCard(TrelloCard trelloList) {
-        ToDoCard tmp = new ToDoCard();
-        tmp.setData(trelloList.getName(), trelloList.getDescription(), trelloList.getId());
-        return tmp;
-    }
+//    public static ToDoCard createListCard(TrelloCard trelloList) {
+//        ToDoCard tmp = new ToDoCard();
+//        tmp.setData(trelloList.getLotrelloList.getName(), trelloList.getDescription(), trelloList.getId());
+//        return tmp;
+//    }
 
     @Override
     public String getTitle() {
@@ -45,10 +47,22 @@ public class ToDoCard implements ICard<String>, Serializable {
     }
 
     @Override
-    public void setData(String title, String s, String id) {
+    public void setData(int localID,String title, String s, String id) {
         mTitle = title;
         mContent = s;
         mID = id;
+        this.localID = localID;
+        mModif = true;
+    }
+
+    @Override
+    public int getLocalID() {
+        return localID;
+    }
+
+    @Override
+    public boolean wasModified() {
+        return mModif;
     }
 
     @Override

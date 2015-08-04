@@ -15,6 +15,9 @@ public interface ICard<CONTENT> {
 
     String getID();
 
-    void setData(String title, CONTENT content, String id);
+    void setData(int localID,String title, CONTENT content, String webId);
 
+    int getLocalID();
+
+    boolean wasModified();
 }

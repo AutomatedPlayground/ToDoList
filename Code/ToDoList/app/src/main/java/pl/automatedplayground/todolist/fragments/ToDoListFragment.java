@@ -13,6 +13,7 @@ import pl.automatedplayground.todolist.CardDetails;
 import pl.automatedplayground.todolist.base.interfaces.SimpleCallback;
 import pl.automatedplayground.todolist.base.interfaces.SimpleDataProvider;
 import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.CardFactory;
+import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.CardType;
 import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.ToDoCard;
 
 public class ToDoListFragment extends ACardListFragment<ToDoCard, SimpleDataProvider<ToDoCard>> implements SimpleDataProvider<ToDoCard> {
@@ -25,6 +26,7 @@ public class ToDoListFragment extends ACardListFragment<ToDoCard, SimpleDataProv
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), CardDetails.class);
+                intent.putExtra(CardDetails.INTENT_CARDTYPE, CardType.TODO.toInt());
                 startActivity(intent);
             }
         };

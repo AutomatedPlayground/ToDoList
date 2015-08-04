@@ -81,6 +81,12 @@ public abstract class ACardListFragment<DATATYPE extends ICard<?>, DATAPROVIDER 
         mAddButton.setVisibility(isAddAvaiable() ? View.VISIBLE : View.INVISIBLE);
         mAddButton.setOnClickListener(createOnAddClicked());
 
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         mDataProvider.refreshData(new SimpleCallback<ArrayList<DATATYPE>>() {
 
             @Override
@@ -100,8 +106,6 @@ public abstract class ACardListFragment<DATATYPE extends ICard<?>, DATAPROVIDER 
                 });
             }
         });
-
-        return view;
     }
 
     /**

@@ -5,12 +5,24 @@ package pl.automatedplayground.todolist.dataprovider.model.realmmodel;
 */
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 public class RealmCard extends RealmObject {
+    @PrimaryKey
+    private int localID;
     private String ID;
     private String title;
     private String content;
+    private int modified;
     private int type;
+
+    public int getLocalID() {
+        return localID;
+    }
+
+    public void setLocalID(int l) {
+        localID = l;
+    }
 
     public String getID() {
         return ID;
@@ -42,5 +54,13 @@ public class RealmCard extends RealmObject {
 
     public void setType(int nType) {
         type = nType;
+    }
+
+    public int getModified(){
+        return modified;
+    }
+
+    public void setModified(int val){
+        modified = val;
     }
 }

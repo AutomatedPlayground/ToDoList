@@ -20,6 +20,8 @@ import retrofit.Callback;
  * Public visible functions
  */
 public interface CardFactoryInterface {
+    ICard<String> getCardByLocalID(int cardID);
+
     /**
      * Get all cards for 1st list
      *
@@ -47,7 +49,7 @@ public interface CardFactoryInterface {
      *
      * @return
      */
-    void createNewCard(String title, String content, DateTime dateForCard, CardType listToAdd, Callback<ICard<String>> onReturn);
+    void createNewCard(String title, String content, CardType listToAdd, SimpleCallback<ICard<String>> onReturn);
 
     /**
      * Move card to other list - or remove if null as param
@@ -56,7 +58,7 @@ public interface CardFactoryInterface {
      * @param newRequestedType
      * @return
      */
-    void changeCardType(ICard<String> source, CardType newRequestedType, Callback<ICard<String>> onReturn);
+    void changeCardType(ICard<String> source, CardType newRequestedType, SimpleCallback<ICard<String>> onReturn);
 
     /**
      * Update card info - content and name
@@ -64,7 +66,7 @@ public interface CardFactoryInterface {
      * @param source
      * @return
      */
-    void changeCardData(ICard<String> source, Callback<ICard<String>> onReturn);
+    void changeCardData(ICard<String> source, SimpleCallback<ICard<String>> onReturn);
 
     /**
      * Remove card
@@ -72,5 +74,6 @@ public interface CardFactoryInterface {
      * @param source
      * @return
      */
-    void removeCard(ICard<String> source, Callback<Boolean> onReturn);
+    void removeCard(ICard<String> source, SimpleCallback<Boolean> onReturn);
+
 }

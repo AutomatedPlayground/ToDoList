@@ -1,5 +1,6 @@
 package pl.automatedplayground.todolist;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -146,6 +148,7 @@ public class CardDetailsFragment extends Fragment {
     }
 
     private void cancelEdit() {
+        hideKeyboard();
         cardTitleEditable.setText(cardTitle.getText().toString());
         cardContentEditable.setText(cardContent.getText().toString());
         modeView.setVisibility(View.VISIBLE);
@@ -155,15 +158,16 @@ public class CardDetailsFragment extends Fragment {
     }
 
     private void saveEdit() {
+        hideKeyboard();
         cardTitle.setText(cardTitleEditable.getText().toString());
         cardContent.setText(cardContentEditable.getText().toString());
-        if (localCard!=null) {
+        if (localCard != null) {
             // change card data
-            localCard.setData(localCard.getLocalID(),cardTitleEditable.getText().toString(),cardContentEditable.getText().toString(),localCard.getID());
+            localCard.setData(localCard.getLocalID(), cardTitleEditable.getText().toString(), cardContentEditable.getText().toString(), localCard.getID());
             CardFactory.getInstance().changeCardData(localCard, null);
-        }else{
+        } else {
             // create new card
-            CardFactory.getInstance().createNewCard(cardTitleEditable.getText().toString(),cardContentEditable.getText().toString(),newCardType,null);
+            CardFactory.getInstance().createNewCard(cardTitleEditable.getText().toString(), cardContentEditable.getText().toString(), newCardType, null);
             getActivity().finish();
         }
 
@@ -180,12 +184,17 @@ public class CardDetailsFragment extends Fragment {
      * Remove current card from local database
      */
     private void remove() {
+        hideKeyboard();
         CardFactory.getInstance().removeCard(localCard, new SimpleCallback<Boolean>() {
             @Override
             public void onCallback(Boolean obj) {
-
+                getActivity().finish();
             }
         });
-        getActivity().finish();
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) (getActivity().getSystemService(Context.INPUT_METHOD_SERVICE));
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
     }
 }

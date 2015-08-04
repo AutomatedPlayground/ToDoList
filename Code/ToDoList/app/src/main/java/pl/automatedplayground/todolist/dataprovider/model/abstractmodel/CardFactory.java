@@ -152,6 +152,7 @@ public class CardFactory implements CardFactoryInterface {
         if (objs == null || objs.count() == 0)
             return false;
         objs.findFirst().removeFromRealm();
+        realm.commitTransaction();
         return true;
     }
 
@@ -187,24 +188,28 @@ public class CardFactory implements CardFactoryInterface {
     @Override
     public void createNewCard(String title, String content, CardType listToAdd, SimpleCallback<ICard<String>> onReturn) {
         int cardID = createNewCard(title, content, listToAdd);
-        onReturn.onCallback(getCardByLocalID(cardID));
+        if (onReturn != null)
+            onReturn.onCallback(getCardByLocalID(cardID));
     }
 
 
     @Override
     public void changeCardType(ICard<String> source, CardType newRequestedType, SimpleCallback<ICard<String>> onReturn) {
         moveCardToOtherList(source.getLocalID(), newRequestedType);
-        onReturn.onCallback(getCardByLocalID(source.getLocalID()));
+        if (onReturn != null)
+            onReturn.onCallback(getCardByLocalID(source.getLocalID()));
     }
 
     @Override
     public void changeCardData(ICard<String> source, SimpleCallback<ICard<String>> onReturn) {
         updateCardData(source.getLocalID(), source.getTitle(), source.getContent(), source.getID());
-        onReturn.onCallback(getCardByLocalID(source.getLocalID()));
+        if (onReturn != null)
+            onReturn.onCallback(getCardByLocalID(source.getLocalID()));
     }
 
     @Override
     public void removeCard(ICard<String> source, SimpleCallback<Boolean> onReturn) {
-        onReturn.onCallback(removeCard(source.getLocalID()));
+        if (onReturn != null)
+            onReturn.onCallback(removeCard(source.getLocalID()));
     }
 }

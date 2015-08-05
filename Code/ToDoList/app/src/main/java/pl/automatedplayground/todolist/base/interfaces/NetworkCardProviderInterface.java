@@ -12,11 +12,11 @@ public interface NetworkCardProviderInterface {
     * Synchronize all cards to server
     * @param callback
     */
-   public void synchronizeCards(SimpleNetworkCallback<String> callback);
+   public void synchronizeCards(SimpleNetworkCallback<Object> callback);
 
    /**
     * Synchronize all cards from server - should be called only once in app lifetime
     * @param callback
     */
-   public void initialSyncFromServer(SimpleNetworkCallback<String> callback);
+   public void initialSyncFromServer(SimpleNetworkCallback<Object> callback);
 }

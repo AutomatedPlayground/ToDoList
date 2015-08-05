@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import pl.automatedplayground.todolist.CardDetails;
 import pl.automatedplayground.todolist.R;
@@ -75,7 +76,7 @@ public class DoingListFragment extends ACardListFragment<DoingCard, SimpleDataPr
     @Override
     public void refreshData(final SimpleCallback<ArrayList<DoingCard>> simpleCallback) {
 
-        NetworkCardProvider.getInstance().synchronizeCards(new SimpleNetworkCallback<String>() {
+        NetworkCardProvider.getInstance().synchronizeCards(new SimpleNetworkCallback<Object>() {
             @Override
             public void onError() {
                 Toast.makeText(getActivity(), R.string.error_network, Toast.LENGTH_SHORT).show();
@@ -84,7 +85,7 @@ public class DoingListFragment extends ACardListFragment<DoingCard, SimpleDataPr
             }
 
             @Override
-            public void onCallback(String obj) {
+            public void onCallback(Object obj) {
                 // load local/updated from server
                 CardManager.getInstance().getAllCardsForDoingList(simpleCallback);
             }

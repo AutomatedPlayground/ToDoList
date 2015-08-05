@@ -76,7 +76,7 @@ public class ToDoListFragment extends ACardListFragment<ToDoCard, SimpleDataProv
     @Override
     public void refreshData(final SimpleCallback<ArrayList<ToDoCard>> simpleCallback) {
 
-        NetworkCardProvider.getInstance().synchronizeCards(new SimpleNetworkCallback<String>() {
+        NetworkCardProvider.getInstance().synchronizeCards(new SimpleNetworkCallback<Object>() {
             @Override
             public void onError() {
                 Toast.makeText(getActivity(), R.string.error_network, Toast.LENGTH_SHORT).show();
@@ -85,7 +85,7 @@ public class ToDoListFragment extends ACardListFragment<ToDoCard, SimpleDataProv
             }
 
             @Override
-            public void onCallback(String obj) {
+            public void onCallback(Object obj) {
                 // load local/updated from server
                 CardManager.getInstance().getAllCardsForTODOList(simpleCallback);
             }

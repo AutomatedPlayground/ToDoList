@@ -2,7 +2,6 @@ package pl.automatedplayground.todolist;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Debug;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -13,9 +12,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -68,31 +64,31 @@ public class MainActivity extends AppCompatActivity {
 
             // check if its first run
             if (checkFirstRun())
-                NetworkCardProvider.getInstance().initialSyncFromServer(new SimpleNetworkCallback<String>() {
+                NetworkCardProvider.getInstance().initialSyncFromServer(new SimpleNetworkCallback<Object>() {
                     @Override
                     public void onError() {
                         // first run require network response
-                        Toast.makeText(MainActivity.this,R.string.error_first,Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, R.string.error_first, Toast.LENGTH_LONG).show();
                         // TODO: switch to view
                     }
 
                     @Override
-                    public void onCallback(String obj) {
+                    public void onCallback(Object obj) {
                         // update ready
                         setFirstRunCompleted();
-                       showDataAfterLoading(onDemand);
+                        showDataAfterLoading(onDemand);
                     }
                 });
             else
-                NetworkCardProvider.getInstance().synchronizeCards(new SimpleNetworkCallback<String>() {
+                NetworkCardProvider.getInstance().synchronizeCards(new SimpleNetworkCallback<Object>() {
                     @Override
                     public void onError() {
-                        Toast.makeText(MainActivity.this,R.string.error_offline,Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, R.string.error_offline, Toast.LENGTH_LONG).show();
                         showDataAfterLoading(onDemand);
                     }
 
                     @Override
-                    public void onCallback(String obj) {
+                    public void onCallback(Object obj) {
                         showDataAfterLoading(onDemand);
                     }
                 });
@@ -107,8 +103,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 loading = false;
-                if (onDemand)
+                if (onDemand) {
+                    mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
                     mPager.setAdapter(mPagerAdapter);
+                }
                 invalidateOptionsMenu();
                 setLoading(false, true);
             }
@@ -117,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Check if its a first run
+     *
      * @return
      */
     private boolean checkFirstRun() {
@@ -131,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
      * Set that first run was completed sucessfully
      */
     private void setFirstRunCompleted() {
-        getPreferences(MODE_PRIVATE).edit().putBoolean(KEY_FIRSTRUN,false).commit();
+        getPreferences(MODE_PRIVATE).edit().putBoolean(KEY_FIRSTRUN, false).commit();
     }
 
     @Override
@@ -173,6 +172,11 @@ public class MainActivity extends AppCompatActivity {
 
         public ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);
+        }
+
+        @Override
+        public void notifyDataSetChanged() {
+            super.notifyDataSetChanged();
         }
 
         @Override

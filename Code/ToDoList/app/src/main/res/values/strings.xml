@@ -13,6 +13,8 @@
     <string name="card_doing_to_done">Finish</string>
     <string name="card_done_to_doing">Start again</string>
     <string name="error_network">Network error occured, please try again.</string>
+    <string name="error_offline">Network error occured. App will work offline until network will be present</string>
+    <string name="error_first">First run cant be done without network connection. Enable network and try again.</string>
     <string name="header_todo">Todo</string>
     <string name="header_doing">Doing</string>
     <string name="header_done">Done</string>

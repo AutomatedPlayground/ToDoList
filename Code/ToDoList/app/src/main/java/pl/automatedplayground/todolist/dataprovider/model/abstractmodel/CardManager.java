@@ -11,8 +11,9 @@ import java.util.ArrayList;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
+import pl.automatedplayground.todolist.base.interfaces.CardFactoryInterface;
 import pl.automatedplayground.todolist.base.interfaces.SimpleCallback;
-import pl.automatedplayground.todolist.dataprovider.model.CardFactoryInterface;
+import pl.automatedplayground.todolist.dataprovider.model.api.model.TrelloCard;
 import pl.automatedplayground.todolist.dataprovider.model.realmmodel.RealmCard;
 
 public class CardManager implements CardFactoryInterface {
@@ -125,11 +126,11 @@ public class CardManager implements CardFactoryInterface {
      * @param type
      * @return
      */
-    private int createNewCard(String name, String content, CardType type) {
+    private int createNewCard(String name, String content, CardType type, String netID) {
         Realm realm = Realm.getInstance(mContext);
         realm.beginTransaction();
         RealmCard object = realm.createObject(RealmCard.class);
-        object.setID("");
+        object.setID(netID == null ? "" : netID);
         object.setModified(0);
         object.setContent(content);
         object.setTitle(name);
@@ -186,8 +187,8 @@ public class CardManager implements CardFactoryInterface {
     }
 
     @Override
-    public void createNewCard(String title, String content, CardType listToAdd, SimpleCallback<ICard<String>> onReturn) {
-        int cardID = createNewCard(title, content, listToAdd);
+    public void createNewCard(String title, String content, CardType listToAdd, String id,SimpleCallback<ICard<String>> onReturn) {
+        int cardID = createNewCard(title, content, listToAdd, id);
         if (onReturn != null)
             onReturn.onCallback(getCardByLocalID(cardID));
     }
@@ -211,5 +212,22 @@ public class CardManager implements CardFactoryInterface {
     public void removeCard(ICard<String> source, SimpleCallback<Boolean> onReturn) {
         if (onReturn != null)
             onReturn.onCallback(removeCard(source.getLocalID()));
+    }
+
+    @Override
+    public void addNewExistingNetCard(TrelloCard trelloCard, CardType mode) {
+        createNewCard(trelloCard.getName(), trelloCard.getDescription(), mode, trelloCard.getId());
+    }
+
+    @Override
+    public void updateWebID(int localID, String id) {
+        Realm realm = Realm.getInstance(mContext);
+        realm.beginTransaction();
+        RealmQuery<RealmCard> objs = realm.allObjects(RealmCard.class).where().equalTo("localID", localID);
+        if (objs == null || objs.count() == 0)
+            return;
+        RealmCard object = objs.findFirst();
+        object.setID(id);
+        realm.commitTransaction();
     }
 }

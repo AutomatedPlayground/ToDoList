@@ -220,8 +220,12 @@ public class CardDetailsFragment extends Fragment {
             CardManager.getInstance().changeCardData(localCard, null);
         } else {
             // create new card
-            CardManager.getInstance().createNewCard(cardTitleEditable.getText().toString(), cardContentEditable.getText().toString(), newCardType, null);
-            getActivity().finish();
+            CardManager.getInstance().createNewCard(cardTitleEditable.getText().toString(), cardContentEditable.getText().toString(), newCardType, null, new SimpleCallback<ICard<String>>() {
+                @Override
+                public void onCallback(ICard<String> obj) {
+                    getActivity().finish();
+                }
+            });
         }
 
 

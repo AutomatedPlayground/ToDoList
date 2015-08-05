@@ -42,5 +42,5 @@ public class ConfigFile {
     /**
      * If this will be enabled, user will have possibility to add task on any list
      */
-    public static boolean SHOW_ADDBUTTON_ON_ALLVIEWS = true;
+    public static boolean SHOW_ADDBUTTON_ON_ALLVIEWS = false;
 }

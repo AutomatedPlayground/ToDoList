@@ -237,4 +237,17 @@ public class CardManager implements CardFactoryInterface {
         realm.commitTransaction();
         realm.refresh();
     }
+
+    @Override
+    public void setModifedToFalseForNetID(String id) {
+        Realm realm = Realm.getInstance(mContext);
+        realm.beginTransaction();
+        RealmQuery<RealmCard> objs = realm.allObjects(RealmCard.class).where().equalTo("ID", id);
+        if (objs == null || objs.count() == 0)
+            return;
+        RealmCard object = objs.findFirst();
+        object.setModified(0);
+        realm.commitTransaction();
+        realm.refresh();
+    }
 }

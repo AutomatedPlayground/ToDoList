@@ -182,9 +182,19 @@ public class NetworkCardProvider implements ErrorHandler, RequestInterceptor, Ne
                             if (obj.get(i).getID().length() > 3) {
                                 for (int j = 0; j < trelloCards.size(); j++) {
                                     if (trelloCards.get(j).getId().equalsIgnoreCase(obj.get(i).getID())) {
-                                        if (obj.get(i).wasModified()) {
+                                        if (obj.get(i).wasModified() && !checkIfCardDontNeedUpdate(trelloCards.get(j), obj.get(i))) {
                                             // update
-                                            updateCard(obj.get(i), null);
+                                            updateCard(obj.get(i), new Callback<TrelloCard>() {
+                                                @Override
+                                                public void success(TrelloCard trelloCard, Response response) {
+
+                                                }
+
+                                                @Override
+                                                public void failure(RetrofitError error) {
+
+                                                }
+                                            });
                                         }
                                         trelloCards.remove(j);
                                         j--;
@@ -193,7 +203,7 @@ public class NetworkCardProvider implements ErrorHandler, RequestInterceptor, Ne
                                 }
                             } else {
                                 // insert object to net db, without controlling the callback
-                                if (obj.get(i).getID()!=null){
+                                if (obj.get(i).getID() != null) {
                                     // move to current list
                                     obj.get(i).setType(CardType.TODO.toInt());
                                     updateCard(obj.get(i), new Callback<TrelloCard>() {
@@ -207,7 +217,7 @@ public class NetworkCardProvider implements ErrorHandler, RequestInterceptor, Ne
 
                                         }
                                     });
-                                }else
+                                } else
                                     putCard(obj.get(i), createUpdateCallback(obj.get(i)));
                             }
                         }
@@ -252,9 +262,18 @@ public class NetworkCardProvider implements ErrorHandler, RequestInterceptor, Ne
                             if (obj.get(i).getID().length() > 3) {
                                 for (int j = 0; j < trelloCards.size(); j++) {
                                     if (trelloCards.get(j).getId().equalsIgnoreCase(obj.get(i).getID())) {
-                                        if (obj.get(i).wasModified()) {
+                                        if (obj.get(i).wasModified() && !checkIfCardDontNeedUpdate(trelloCards.get(j), obj.get(i))) {
                                             // update
-                                            updateCard(obj.get(i), null);
+                                            updateCard(obj.get(i), new Callback<TrelloCard>() {
+                                                @Override
+                                                public void success(TrelloCard trelloCard, Response response) {
+                                                }
+
+                                                @Override
+                                                public void failure(RetrofitError error) {
+
+                                                }
+                                            });
                                         }
                                         trelloCards.remove(j);
                                         j--;
@@ -263,13 +282,12 @@ public class NetworkCardProvider implements ErrorHandler, RequestInterceptor, Ne
                                 }
                             } else {
                                 // insert object to net db, without controlling the callback
-                                if (obj.get(i).getID()!=null){
+                                if (obj.get(i).getID() != null) {
                                     // move to current list
                                     obj.get(i).setType(CardType.TODO.toInt());
                                     updateCard(obj.get(i), new Callback<TrelloCard>() {
                                         @Override
                                         public void success(TrelloCard trelloCard, Response response) {
-
                                         }
 
                                         @Override
@@ -277,7 +295,7 @@ public class NetworkCardProvider implements ErrorHandler, RequestInterceptor, Ne
 
                                         }
                                     });
-                                }else
+                                } else
                                     putCard(obj.get(i), createUpdateCallback(obj.get(i)));
                             }
                         }
@@ -322,9 +340,18 @@ public class NetworkCardProvider implements ErrorHandler, RequestInterceptor, Ne
                             if (obj.get(i).getID().length() > 3) {
                                 for (int j = 0; j < trelloCards.size(); j++) {
                                     if (trelloCards.get(j).getId().equalsIgnoreCase(obj.get(i).getID())) {
-                                        if (obj.get(i).wasModified()) {
+                                        if (obj.get(i).wasModified() && !checkIfCardDontNeedUpdate(trelloCards.get(j), obj.get(i))) {
                                             // update
-                                            updateCard(obj.get(i), null);
+                                            updateCard(obj.get(i), new Callback<TrelloCard>() {
+                                                @Override
+                                                public void success(TrelloCard trelloCard, Response response) {
+                                                }
+
+                                                @Override
+                                                public void failure(RetrofitError error) {
+
+                                                }
+                                            });
                                         }
                                         trelloCards.remove(j);
                                         j--;
@@ -333,13 +360,12 @@ public class NetworkCardProvider implements ErrorHandler, RequestInterceptor, Ne
                                 }
                             } else {
                                 // insert object to net db, without controlling the callback
-                                if (obj.get(i).getID()!=null){
+                                if (obj.get(i).getID() != null) {
                                     // move to current list
                                     obj.get(i).setType(CardType.TODO.toInt());
                                     updateCard(obj.get(i), new Callback<TrelloCard>() {
                                         @Override
                                         public void success(TrelloCard trelloCard, Response response) {
-
                                         }
 
                                         @Override
@@ -347,7 +373,7 @@ public class NetworkCardProvider implements ErrorHandler, RequestInterceptor, Ne
 
                                         }
                                     });
-                                }else
+                                } else
                                     putCard(obj.get(i), createUpdateCallback(obj.get(i)));
                             }
                         }
@@ -378,6 +404,12 @@ public class NetworkCardProvider implements ErrorHandler, RequestInterceptor, Ne
                 errorCallback.onError();
             }
         });
+    }
+
+    private boolean checkIfCardDontNeedUpdate(TrelloCard trelloCard, ICard<String> localCard) {
+        if (trelloCard.getId().equalsIgnoreCase(localCard.getID()) && trelloCard.getDescription().equalsIgnoreCase(localCard.getContent()) && trelloCard.getName().equalsIgnoreCase(localCard.getTitle()))
+            return true;
+        return false;
     }
 
     private Callback<TrelloCard> createUpdateCallback(final ICard<String> toDoCard) {

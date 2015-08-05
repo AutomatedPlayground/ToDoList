@@ -80,4 +80,6 @@ public interface CardFactoryInterface {
     void addNewExistingNetCard(TrelloCard trelloCard, CardType mode);
 
     void updateWebID(int localID, String id);
+
+    void setModifedToFalseForNetID(String id);
 }

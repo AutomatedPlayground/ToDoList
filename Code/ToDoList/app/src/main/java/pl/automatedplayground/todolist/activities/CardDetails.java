@@ -1,10 +1,12 @@
-package pl.automatedplayground.todolist;
+package pl.automatedplayground.todolist.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import pl.automatedplayground.todolist.R;
 import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.CardType;
 import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.ICard;
+import pl.automatedplayground.todolist.fragments.CardDetailsFragment;
 
 public class CardDetails extends AppCompatActivity {
 

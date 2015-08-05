@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
-import pl.automatedplayground.todolist.base.interfaces.CardFactoryInterface;
 import pl.automatedplayground.todolist.base.interfaces.SimpleCallback;
+import pl.automatedplayground.todolist.dataprovider.model.CardFactoryInterface;
 import pl.automatedplayground.todolist.dataprovider.model.api.model.TrelloCard;
 import pl.automatedplayground.todolist.dataprovider.model.realmmodel.RealmCard;
 
@@ -20,6 +20,10 @@ public class CardManager implements CardFactoryInterface {
     static private CardManager mInstance = null;
     Context mContext;
 
+
+    private CardManager() {
+        // hiding constructor
+    }
 
     public static CardFactoryInterface getInstance() {
         if (mInstance == null)
@@ -29,10 +33,6 @@ public class CardManager implements CardFactoryInterface {
 
     public void setContext(Context ctx) {
         mContext = ctx;
-    }
-
-    private CardManager() {
-        // hiding constructor
     }
 
     /**

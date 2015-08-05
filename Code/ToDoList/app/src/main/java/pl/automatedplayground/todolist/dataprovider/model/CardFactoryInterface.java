@@ -1,10 +1,8 @@
-package pl.automatedplayground.todolist.base.interfaces;
+package pl.automatedplayground.todolist.dataprovider.model;
 /*
    Created by Adrian Skupień (automatedplayground@gmail.com) on 01.08.15.
    Copyright (c) 2015 Automated Playground under Apache 2.0 License
 */
-
-import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 
@@ -15,7 +13,6 @@ import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.DoneCard
 import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.ICard;
 import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.ToDoCard;
 import pl.automatedplayground.todolist.dataprovider.model.api.model.TrelloCard;
-import retrofit.Callback;
 
 /**
  * Public visible functions
@@ -50,7 +47,7 @@ public interface CardFactoryInterface {
      *
      * @return
      */
-    void createNewCard(String title, String content, CardType listToAdd, String id,SimpleCallback<ICard<String>> onReturn);
+    void createNewCard(String title, String content, CardType listToAdd, String id, SimpleCallback<ICard<String>> onReturn);
 
     /**
      * Move card to other list - or remove if null as param

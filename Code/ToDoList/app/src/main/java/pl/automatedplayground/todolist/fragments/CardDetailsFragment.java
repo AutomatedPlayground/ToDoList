@@ -1,4 +1,4 @@
-package pl.automatedplayground.todolist;
+package pl.automatedplayground.todolist.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -13,9 +13,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import pl.automatedplayground.todolist.R;
 import pl.automatedplayground.todolist.base.interfaces.SimpleCallback;
 import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.CardManager;
 import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.CardType;
@@ -211,6 +213,10 @@ public class CardDetailsFragment extends Fragment {
     }
 
     private void saveEdit() {
+        if (cardTitleEditable.getText().toString().length() < 3) {
+            Toast.makeText(getActivity(), R.string.titletoshort, Toast.LENGTH_SHORT).show();
+            return;
+        }
         hideKeyboard();
         cardTitle.setText(cardTitleEditable.getText().toString());
         cardContent.setText(cardContentEditable.getText().toString());

@@ -56,11 +56,11 @@ public class RealmCard extends RealmObject {
         type = nType;
     }
 
-    public int getModified(){
+    public int getModified() {
         return modified;
     }
 
-    public void setModified(int val){
+    public void setModified(int val) {
         modified = val;
     }
 }

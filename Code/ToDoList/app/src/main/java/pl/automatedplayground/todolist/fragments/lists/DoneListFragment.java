@@ -1,4 +1,4 @@
-package pl.automatedplayground.todolist.fragments;/*
+package pl.automatedplayground.todolist.fragments.lists;/*
    Created by Adrian Skupień (automatedplayground@gmail.com) on 01.08.15.
    Copyright (c) 2015 Automated Playground under Apache 2.0 License
 */
@@ -9,18 +9,17 @@ import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
-import pl.automatedplayground.todolist.CardDetails;
 import pl.automatedplayground.todolist.R;
+import pl.automatedplayground.todolist.activities.CardDetails;
 import pl.automatedplayground.todolist.base.interfaces.SimpleCallback;
-import pl.automatedplayground.todolist.base.interfaces.SimpleDataProvider;
+import pl.automatedplayground.todolist.base.interfaces.SimpleNetworkCallback;
 import pl.automatedplayground.todolist.configuration.ConfigFile;
+import pl.automatedplayground.todolist.dataprovider.model.SimpleDataProvider;
 import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.CardManager;
 import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.CardType;
 import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.DoneCard;
 import pl.automatedplayground.todolist.dataprovider.model.api.NetworkCardProvider;
-import pl.automatedplayground.todolist.dataprovider.model.api.SimpleNetworkCallback;
 
 public class DoneListFragment extends ACardListFragment<DoneCard, SimpleDataProvider<DoneCard>> implements SimpleDataProvider<DoneCard> {
 
@@ -38,6 +37,7 @@ public class DoneListFragment extends ACardListFragment<DoneCard, SimpleDataProv
     protected int getTextForHeader() {
         return R.string.header_done;
     }
+
     @Override
     protected View.OnClickListener createOnAddClicked() {
         return new View.OnClickListener() {

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 import pl.automatedplayground.todolist.R;
 import pl.automatedplayground.todolist.base.interfaces.SimpleCallback;
-import pl.automatedplayground.todolist.base.interfaces.SimpleDataProvider;
+import pl.automatedplayground.todolist.dataprovider.model.SimpleDataProvider;
 import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.ICard;
 
 public class CardRecyclerViewAdapter<DATATYPE extends ICard<?>, DATAPROVIDER extends SimpleDataProvider<DATATYPE>> extends RecyclerView.Adapter<CardViewHolder> {

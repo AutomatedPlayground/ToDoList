@@ -4,8 +4,6 @@ package pl.automatedplayground.todolist.dataprovider.model.abstractmodel;
    Copyright (c) 2015 Automated Playground under Apache 2.0 License
 */
 
-import pl.automatedplayground.todolist.dataprovider.model.api.model.TrelloCard;
-
 public class DoneCard extends ToDoCard {
 
     DoneCard() {
@@ -17,6 +15,12 @@ public class DoneCard extends ToDoCard {
 //        tmp.setData(trelloList.getName(), trelloList.getDescription(), trelloList.getId());
 //        return tmp;
 //    }
+
+    public static DoneCard createTestCard() {
+        DoneCard card = new DoneCard();
+        card.setData(-1, "test title", "test description", "");
+        return card;
+    }
 
     @Override
     public CardType getType() {

@@ -1,4 +1,4 @@
-package pl.automatedplayground.todolist.fragments;
+package pl.automatedplayground.todolist.fragments.lists;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,7 +17,7 @@ import butterknife.InjectView;
 import pl.automatedplayground.todolist.R;
 import pl.automatedplayground.todolist.base.CardRecyclerViewAdapter;
 import pl.automatedplayground.todolist.base.interfaces.SimpleCallback;
-import pl.automatedplayground.todolist.base.interfaces.SimpleDataProvider;
+import pl.automatedplayground.todolist.dataprovider.model.SimpleDataProvider;
 import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.ICard;
 
 /*
@@ -29,8 +29,6 @@ public abstract class ACardListFragment<DATATYPE extends ICard<?>, DATAPROVIDER 
 
     @InjectView(R.id.listview)
     RecyclerView mListView;
-    //    @InjectView(R.id.refresh_layout)
-//    SwipeRefreshLayout mRefresh;
     @InjectView(R.id.addbutton)
     ImageView mAddButton;
     @InjectView(R.id.header)
@@ -57,25 +55,6 @@ public abstract class ACardListFragment<DATATYPE extends ICard<?>, DATAPROVIDER 
         mAddButton.setVisibility(isAddAvaiable() ? View.VISIBLE : View.INVISIBLE);
         mAddButton.setOnClickListener(createOnAddClicked());
 
-//        mDataProvider.refreshData(new SimpleCallback<ArrayList<DATATYPE>>() {
-//
-//            @Override
-//            public void onCallback(final ArrayList<DATATYPE> obj) {
-//                // it need to be done on ui thread
-//                mListView.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        if (obj == null)
-//                            ;
-//                        else {
-//                            ((CardRecyclerViewAdapter) mListView.getAdapter()).setData(obj);
-//                            mListView.getAdapter().notifyDataSetChanged();
-//                        }
-////                        mRefresh.setRefreshing(false);
-//                    }
-//                });
-//            }
-//        });
         return view;
     }
 
@@ -83,7 +62,6 @@ public abstract class ACardListFragment<DATATYPE extends ICard<?>, DATAPROVIDER 
 
     protected abstract int getTextForHeader();
 
-    // currently this is provided by activity
     @Override
     public void onResume() {
         super.onResume();

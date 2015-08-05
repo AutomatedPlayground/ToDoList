@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Lista zadań</string>
+    <string name="action_remove">Usuń</string>
+    <string name="action_sync">Synchronizuj</string>
+    <string name="card_cancel">Anuluj</string>
+    <string name="card_doing_to_done">Zakończ</string>
+    <string name="card_doing_to_todo">Anuluj</string>
+    <string name="card_done_to_doing">Wykonaj ponownie</string>
+    <string name="card_edit">Edytuj</string>
+    <string name="card_noaction">Brak dostępnych dodatkowych akcji</string>
+    <string name="card_save">Zapisz</string>
+    <string name="card_todo_to_doing">Rozpocznij</string>
+    <string name="error_first">Pierwsze uruchomienie wymaga połączenia internetowego</string>
+    <string name="error_network">Problem z siecią. Spróbuj ponownie</string>
+    <string name="error_offline">Problem z siecią. Aplikacja będzie działała offline do momentu włączenia internetu</string>
+    <string name="header_doing">W trakcie</string>
+    <string name="header_done">Zakończone</string>
+    <string name="header_todo">Do zrobienia</string>
+    <string name="title_activity_card_details">Szczegóły zadania</string>
+    <string name="content">Szczegóły</string>
+    <string name="title">Tytuł</string>
+    <string name="titletoshort">Tytuł nie może być krótszy niż 3 litery!</string>
+</resources>

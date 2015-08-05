@@ -6,8 +6,6 @@ package pl.automatedplayground.todolist.base;
 
 import android.app.Application;
 
-import net.danlew.android.joda.JodaTimeAndroid;
-
 import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.CardManager;
 import pl.automatedplayground.todolist.dataprovider.model.api.NetworkCardProvider;
 
@@ -15,8 +13,7 @@ public class ToDoListApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        JodaTimeAndroid.init(this);
         ((CardManager) CardManager.getInstance()).setContext(this);
-        ((NetworkCardProvider)NetworkCardProvider.getInstance()).initWithContext(this);
+        ((NetworkCardProvider) NetworkCardProvider.getInstance()).initWithContext(this);
     }
 }

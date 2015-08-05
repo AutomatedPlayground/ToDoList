@@ -1,4 +1,4 @@
-package pl.automatedplayground.todolist.fragments;
+package pl.automatedplayground.todolist.fragments.lists;
 /*
    Created by Adrian Skupień (automatedplayground@gmail.com) on 01.08.15.
    Copyright (c) 2015 Automated Playground under Apache 2.0 License
@@ -11,15 +11,15 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import pl.automatedplayground.todolist.CardDetails;
 import pl.automatedplayground.todolist.R;
+import pl.automatedplayground.todolist.activities.CardDetails;
 import pl.automatedplayground.todolist.base.interfaces.SimpleCallback;
-import pl.automatedplayground.todolist.base.interfaces.SimpleDataProvider;
+import pl.automatedplayground.todolist.base.interfaces.SimpleNetworkCallback;
+import pl.automatedplayground.todolist.dataprovider.model.SimpleDataProvider;
 import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.CardManager;
 import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.CardType;
 import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.ToDoCard;
 import pl.automatedplayground.todolist.dataprovider.model.api.NetworkCardProvider;
-import pl.automatedplayground.todolist.dataprovider.model.api.SimpleNetworkCallback;
 
 public class ToDoListFragment extends ACardListFragment<ToDoCard, SimpleDataProvider<ToDoCard>> implements SimpleDataProvider<ToDoCard> {
 

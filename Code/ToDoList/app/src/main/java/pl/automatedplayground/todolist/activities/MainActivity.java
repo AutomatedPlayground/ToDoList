@@ -1,4 +1,4 @@
-package pl.automatedplayground.todolist;
+package pl.automatedplayground.todolist.activities;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,17 +16,17 @@ import android.widget.Toast;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import pl.automatedplayground.todolist.R;
+import pl.automatedplayground.todolist.base.interfaces.SimpleNetworkCallback;
 import pl.automatedplayground.todolist.dataprovider.model.api.NetworkCardProvider;
-import pl.automatedplayground.todolist.dataprovider.model.api.SimpleNetworkCallback;
-import pl.automatedplayground.todolist.fragments.DoingListFragment;
-import pl.automatedplayground.todolist.fragments.DoneListFragment;
-import pl.automatedplayground.todolist.fragments.ToDoListFragment;
+import pl.automatedplayground.todolist.fragments.lists.DoingListFragment;
+import pl.automatedplayground.todolist.fragments.lists.DoneListFragment;
+import pl.automatedplayground.todolist.fragments.lists.ToDoListFragment;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String KEY_FIRSTRUN = "KEY_FIRST"; // key for first app run
     private static final int NUM_PAGES = 3; // 3 types of cards
-    private static final String KEY_FIRSTRUN = "KEY_FIRST"; // key for first app run
-
     @InjectView(R.id.pager)
     protected ViewPager mPager;
     @InjectView(R.id.mode_loading)
@@ -41,18 +42,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
-//        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         modeLoading.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // just to interfere with background clickable objects
             }
         });
-//        mPager.setAdapter(mPagerAdapter);
         setLoading(true, true);
-        // nice looking but unstable
-        //        int margin = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16,     getResources().getDisplayMetrics());
-        //        mPager.setPageMargin(-margin);
+        // not so good but gives user a info about other pages
+        int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics());
+        mPager.setPageMargin(-margin);
     }
 
     private void setLoading(boolean load, final boolean onDemand) {
@@ -127,8 +126,9 @@ public class MainActivity extends AppCompatActivity {
      * Set that first run was completed sucessfully
      */
     private void setFirstRunCompleted() {
-        getSharedPreferences("data",MODE_PRIVATE).edit().putBoolean(KEY_FIRSTRUN, false).commit();
+        getSharedPreferences("data", MODE_PRIVATE).edit().putBoolean(KEY_FIRSTRUN, false).commit();
     }
+
 
     @Override
     public void onBackPressed() {

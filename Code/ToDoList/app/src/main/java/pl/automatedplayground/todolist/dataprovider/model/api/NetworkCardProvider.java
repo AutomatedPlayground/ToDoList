@@ -10,9 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
-import pl.automatedplayground.todolist.base.interfaces.NetworkCardProviderInterface;
 import pl.automatedplayground.todolist.base.interfaces.SimpleCallback;
+import pl.automatedplayground.todolist.base.interfaces.SimpleNetworkCallback;
 import pl.automatedplayground.todolist.configuration.ConfigFile;
+import pl.automatedplayground.todolist.dataprovider.model.NetworkCardProviderInterface;
 import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.CardManager;
 import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.CardType;
 import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.DoingCard;

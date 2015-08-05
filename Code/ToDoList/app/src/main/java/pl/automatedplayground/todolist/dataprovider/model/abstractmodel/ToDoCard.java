@@ -8,8 +8,6 @@ import android.text.TextUtils;
 
 import java.io.Serializable;
 
-import pl.automatedplayground.todolist.dataprovider.model.api.model.TrelloCard;
-
 public class ToDoCard implements ICard<String>, Serializable {
 
     protected String mTitle;
@@ -47,15 +45,19 @@ public class ToDoCard implements ICard<String>, Serializable {
         return CardType.TODO;
     }
 
+    public void setType(int type) {
+        this.type = type;
+    }
+
     @Override
-    public void setData(int localID,String title, String s, String id) {
+    public void setData(int localID, String title, String s, String id) {
         mTitle = title;
         mContent = s;
         mID = id;
         this.localID = localID;
     }
 
-    public void setModified(){
+    public void setModified() {
         mModif = true;
     }
 
@@ -72,9 +74,5 @@ public class ToDoCard implements ICard<String>, Serializable {
     @Override
     public String getID() {
         return mID;
-    }
-
-    public void setType(int type) {
-        this.type = type;
     }
 }

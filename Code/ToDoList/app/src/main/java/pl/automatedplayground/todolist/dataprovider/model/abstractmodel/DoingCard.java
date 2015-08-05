@@ -4,8 +4,6 @@ package pl.automatedplayground.todolist.dataprovider.model.abstractmodel;
    Copyright (c) 2015 Automated Playground under Apache 2.0 License
 */
 
-import pl.automatedplayground.todolist.dataprovider.model.api.model.TrelloCard;
-
 public class DoingCard extends ToDoCard {
 
     DoingCard() {

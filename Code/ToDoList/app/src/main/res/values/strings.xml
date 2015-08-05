@@ -18,5 +18,8 @@
     <string name="header_todo">Todo</string>
     <string name="header_doing">Doing</string>
     <string name="header_done">Done</string>
+    <string name="title">Title</string>
+    <string name="content">Content</string>
+    <string name="titletoshort">Title cant be shorter than 3 letters!</string>
 
 </resources>

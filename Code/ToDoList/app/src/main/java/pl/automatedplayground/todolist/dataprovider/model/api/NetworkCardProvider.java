@@ -150,47 +150,47 @@ public class NetworkCardProvider implements ErrorHandler, RequestInterceptor, Ne
 
     @Override
     public void synchronizeCards(final SimpleNetworkCallback<Object> callback) {
-        callback.onCallback(null);
-//        atLeastOneInsertedOrModified = false;
-//        // first load to do cards
-//        syncTodo(new SimpleCallback<List<TrelloCard>>() {
-//            @Override
-//            public void onCallback(List<TrelloCard> obj) {
-//                syncDoing(obj, new SimpleCallback<List<TrelloCard>>() {
-//                    @Override
-//                    public void onCallback(List<TrelloCard> obj) {
-//                        syncDone(obj, new SimpleCallback<List<TrelloCard>>() {
-//                            @Override
-//                            public void onCallback(final List<TrelloCard> leftCards) {
-//                                // left obj are items that should exist in todo or be deleted
-//                                CardManager.getInstance().getAllCardsForTODOList(new SimpleCallback<ArrayList<ToDoCard>>() {
-//                                    @Override
-//                                    public void onCallback(ArrayList<ToDoCard> obj) {
-//                                        if (leftCards!=null)
-//                                        for (int i = 0; i < leftCards.size(); i++) {
-//                                            boolean exists = false;
-//                                            if (obj!=null)
-//                                            for (int j = 0; j < obj.size(); j++)
-//                                                if (obj.get(j).getID().equalsIgnoreCase(leftCards.get(i).getId())) {
-//                                                    exists = true;
-//                                                    moveCardToOtherList(leftCards.get(i).getId(), CardType.TODO, null);
-//                                                    break;
-//                                                }
-//                                            if (!exists) {
-//                                                // to be removed
-//                                                removeCard(leftCards.get(i), null);
-//                                            }
-//                                        }
-//                                        // final callback ;)
-//                                        callback.onCallback(null);
-//                                    }
-//                                });
-//                            }
-//                        }, callback);
-//                    }
-//                }, callback);
-//            }
-//        }, callback);
+//        callback.onCallback(null);
+        atLeastOneInsertedOrModified = false;
+        // first load to do cards
+        syncTodo(new SimpleCallback<List<TrelloCard>>() {
+            @Override
+            public void onCallback(List<TrelloCard> obj) {
+                syncDoing(obj, new SimpleCallback<List<TrelloCard>>() {
+                    @Override
+                    public void onCallback(List<TrelloCard> obj) {
+                        syncDone(obj, new SimpleCallback<List<TrelloCard>>() {
+                            @Override
+                            public void onCallback(final List<TrelloCard> leftCards) {
+                                // left obj are items that should exist in todo or be deleted
+                                CardManager.getInstance().getAllCardsForTODOList(new SimpleCallback<ArrayList<ToDoCard>>() {
+                                    @Override
+                                    public void onCallback(ArrayList<ToDoCard> obj) {
+                                        if (leftCards!=null)
+                                        for (int i = 0; i < leftCards.size(); i++) {
+                                            boolean exists = false;
+                                            if (obj!=null)
+                                            for (int j = 0; j < obj.size(); j++)
+                                                if (obj.get(j).getID().equalsIgnoreCase(leftCards.get(i).getId())) {
+                                                    exists = true;
+                                                    moveCardToOtherList(leftCards.get(i).getId(), CardType.TODO, null);
+                                                    break;
+                                                }
+                                            if (!exists) {
+                                                // to be removed
+                                                removeCard(leftCards.get(i), null);
+                                            }
+                                        }
+                                        // final callback ;)
+                                        callback.onCallback(null);
+                                    }
+                                });
+                            }
+                        }, callback);
+                    }
+                }, callback);
+            }
+        }, callback);
 
     }
 

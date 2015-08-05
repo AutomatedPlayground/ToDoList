@@ -217,6 +217,7 @@ public class CardDetailsFragment extends Fragment {
         if (localCard != null) {
             // change card data
             localCard.setData(localCard.getLocalID(), cardTitleEditable.getText().toString(), cardContentEditable.getText().toString(), localCard.getID());
+            localCard.setModified();
             CardManager.getInstance().changeCardData(localCard, null);
         } else {
             // create new card

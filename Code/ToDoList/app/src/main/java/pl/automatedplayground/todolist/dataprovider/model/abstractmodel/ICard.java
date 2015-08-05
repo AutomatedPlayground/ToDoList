@@ -20,4 +20,6 @@ public interface ICard<CONTENT> {
     int getLocalID();
 
     boolean wasModified();
+
+    void setModified();
 }

@@ -52,6 +52,9 @@ public class ToDoCard implements ICard<String>, Serializable {
         mContent = s;
         mID = id;
         this.localID = localID;
+    }
+
+    public void setModified(){
         mModif = true;
     }
 

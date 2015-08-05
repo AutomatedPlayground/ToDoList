@@ -57,25 +57,25 @@ public abstract class ACardListFragment<DATATYPE extends ICard<?>, DATAPROVIDER 
         mAddButton.setVisibility(isAddAvaiable() ? View.VISIBLE : View.INVISIBLE);
         mAddButton.setOnClickListener(createOnAddClicked());
 
-        mDataProvider.refreshData(new SimpleCallback<ArrayList<DATATYPE>>() {
-
-            @Override
-            public void onCallback(final ArrayList<DATATYPE> obj) {
-                // it need to be done on ui thread
-                mListView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (obj == null)
-                            ;
-                        else {
-                            ((CardRecyclerViewAdapter) mListView.getAdapter()).setData(obj);
-                            mListView.getAdapter().notifyDataSetChanged();
-                        }
-//                        mRefresh.setRefreshing(false);
-                    }
-                });
-            }
-        });
+//        mDataProvider.refreshData(new SimpleCallback<ArrayList<DATATYPE>>() {
+//
+//            @Override
+//            public void onCallback(final ArrayList<DATATYPE> obj) {
+//                // it need to be done on ui thread
+//                mListView.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        if (obj == null)
+//                            ;
+//                        else {
+//                            ((CardRecyclerViewAdapter) mListView.getAdapter()).setData(obj);
+//                            mListView.getAdapter().notifyDataSetChanged();
+//                        }
+////                        mRefresh.setRefreshing(false);
+//                    }
+//                });
+//            }
+//        });
         return view;
     }
 

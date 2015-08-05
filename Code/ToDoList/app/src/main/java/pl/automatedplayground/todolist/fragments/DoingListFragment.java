@@ -44,7 +44,7 @@ public class DoingListFragment extends ACardListFragment<DoingCard, SimpleDataPr
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), CardDetails.class);
-                intent.putExtra(CardDetails.INTENT_CARDTYPE, CardType.DONE.toInt());
+                intent.putExtra(CardDetails.INTENT_CARDTYPE, CardType.DOING.toInt());
                 startActivity(intent);
             }
         };

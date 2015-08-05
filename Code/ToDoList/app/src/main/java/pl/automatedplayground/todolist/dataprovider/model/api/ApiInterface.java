@@ -5,6 +5,7 @@ package pl.automatedplayground.todolist.dataprovider.model.api;/*
 
 import java.util.List;
 
+import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.CardType;
 import pl.automatedplayground.todolist.dataprovider.model.api.model.TrelloCard;
 import pl.automatedplayground.todolist.dataprovider.model.api.model.TrelloList;
 import retrofit.Callback;
@@ -28,7 +29,7 @@ public interface ApiInterface {
     public void putCardIntoList(@Query("key") String key, @Query("idList") String list, @Query("name") String name, @Query("desc") String description, @Query("token") String token, Callback<TrelloCard> response);
 
     @POST("/1/cards/{id}")
-    public void updateCard(@Query("key") String key,@Path("id")String id,@Query("name") String name, @Query("desc") String description,@Query("idList")String currentList, @Query("token") String token, Callback<TrelloCard> response);
+    public void updateCard(@Query("key") String key, @Path("id") String id, @Query("name") String name, @Query("desc") String description, @Query("idList") String currentList, @Query("token") String token, Callback<TrelloCard> response);
 
     @POST("/1/cards/{id}")
     public void moveCard(@Query("key") String key,@Path("id")String id, @Query("idList") String list,@Query("token") String token, Callback<String> response);

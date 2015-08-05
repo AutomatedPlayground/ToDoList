@@ -116,7 +116,7 @@ public class CardManager implements CardFactoryInterface {
         object.setType(newList.toInt());
         object.setModified(1);
         // bug around fix - api dont work well with transferring cards, so instead we just remove and create new one
-        object.setID("");
+//        object.setID("");
         realm.commitTransaction();
         realm.refresh();
         return true;
@@ -193,7 +193,7 @@ public class CardManager implements CardFactoryInterface {
     }
 
     @Override
-    public void createNewCard(String title, String content, CardType listToAdd, String id,SimpleCallback<ICard<String>> onReturn) {
+    public void createNewCard(String title, String content, CardType listToAdd, String id, SimpleCallback<ICard<String>> onReturn) {
         int cardID = createNewCard(title, content, listToAdd, id);
         if (onReturn != null)
             onReturn.onCallback(getCardByLocalID(cardID));

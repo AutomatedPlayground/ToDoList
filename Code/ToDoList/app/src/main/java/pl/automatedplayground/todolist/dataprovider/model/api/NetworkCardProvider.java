@@ -35,7 +35,7 @@ public class NetworkCardProvider implements ErrorHandler, RequestInterceptor, Ne
     private static NetworkCardProvider ourInstance = new NetworkCardProvider();
     private ApiInterface apiInterface;
     private Context mContext;
-    private boolean atLeastOneInsertedOrModified; // for internal usage only
+
 
     private NetworkCardProvider() {
     }
@@ -150,41 +150,17 @@ public class NetworkCardProvider implements ErrorHandler, RequestInterceptor, Ne
 
     @Override
     public void synchronizeCards(final SimpleNetworkCallback<Object> callback) {
-//        callback.onCallback(null);
-        atLeastOneInsertedOrModified = false;
-        // first load to do cards
         syncTodo(new SimpleCallback<List<TrelloCard>>() {
             @Override
             public void onCallback(List<TrelloCard> obj) {
-                syncDoing(obj, new SimpleCallback<List<TrelloCard>>() {
+                syncDoing(new SimpleCallback<List<TrelloCard>>() {
                     @Override
                     public void onCallback(List<TrelloCard> obj) {
-                        syncDone(obj, new SimpleCallback<List<TrelloCard>>() {
+                        syncDone(new SimpleCallback<List<TrelloCard>>() {
                             @Override
                             public void onCallback(final List<TrelloCard> leftCards) {
-                                // left obj are items that should exist in todo or be deleted
-//                                CardManager.getInstance().getAllCardsForTODOList(new SimpleCallback<ArrayList<ToDoCard>>() {
-//                                    @Override
-//                                    public void onCallback(ArrayList<ToDoCard> obj) {
-//                                        if (leftCards != null)
-//                                            for (int i = 0; i < leftCards.size(); i++) {
-//                                                boolean exists = false;
-//                                                if (obj != null)
-//                                                    for (int j = 0; j < obj.size(); j++)
-//                                                        if (obj.get(j).getID().equalsIgnoreCase(leftCards.get(i).getId())) {
-//                                                            exists = true;
-//                                                            moveCardToOtherList(leftCards.get(i).getId(), CardType.TODO, null);
-//                                                            break;
-//                                                        }
-//                                                if (!exists) {
-//                                                    // to be removed
-//                                                    removeCard(leftCards.get(i), null);
-//                                                }
-//                                            }
-                                        // final callback ;)
-                                        callback.onCallback(null);
-//                                    }
-//                                });
+                                callback.onCallback(null);
+
                             }
                         }, callback);
                     }
@@ -209,7 +185,6 @@ public class NetworkCardProvider implements ErrorHandler, RequestInterceptor, Ne
                                         if (obj.get(i).wasModified()) {
                                             // update
                                             updateCard(obj.get(i), null);
-                                            atLeastOneInsertedOrModified = true;
                                         }
                                         trelloCards.remove(j);
                                         j--;
@@ -218,8 +193,162 @@ public class NetworkCardProvider implements ErrorHandler, RequestInterceptor, Ne
                                 }
                             } else {
                                 // insert object to net db, without controlling the callback
-                                putCard(obj.get(i), createUpdateCallback(obj.get(i)));
-                                atLeastOneInsertedOrModified = true;
+                                if (obj.get(i).getID()!=null){
+                                    // move to current list
+                                    obj.get(i).setType(CardType.TODO.toInt());
+                                    updateCard(obj.get(i), new Callback<TrelloCard>() {
+                                        @Override
+                                        public void success(TrelloCard trelloCard, Response response) {
+
+                                        }
+
+                                        @Override
+                                        public void failure(RetrofitError error) {
+
+                                        }
+                                    });
+                                }else
+                                    putCard(obj.get(i), createUpdateCallback(obj.get(i)));
+                            }
+                        }
+                        for (int i = 0; i < trelloCards.size(); i++) {
+                            removeCard(trelloCards.get(i), new Callback<String>() {
+                                @Override
+                                public void success(String s, Response response) {
+
+                                }
+
+                                @Override
+                                public void failure(RetrofitError error) {
+
+                                }
+                            });
+                            trelloCards.remove(i);
+                            i--;
+                        }
+                        // now trellocards contains only cards that need to be removed from here
+                        afterFinish.onCallback(trelloCards);
+
+                    }
+                });
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                errorCallback.onError();
+            }
+        });
+    }
+
+    private void syncDoing(final SimpleCallback<List<TrelloCard>> afterFinish, final SimpleNetworkCallback<?> errorCallback) {
+        getDoingCards(new Callback<List<TrelloCard>>() {
+            @Override
+            public void success(final List<TrelloCard> trelloCards, Response response) {
+                // load local cards
+                CardManager.getInstance().getAllCardsForDoingList(new SimpleCallback<ArrayList<DoingCard>>() {
+                    @Override
+                    public void onCallback(ArrayList<DoingCard> obj) {
+                        for (int i = 0; i < obj.size(); i++) {
+                            if (obj.get(i).getID().length() > 3) {
+                                for (int j = 0; j < trelloCards.size(); j++) {
+                                    if (trelloCards.get(j).getId().equalsIgnoreCase(obj.get(i).getID())) {
+                                        if (obj.get(i).wasModified()) {
+                                            // update
+                                            updateCard(obj.get(i), null);
+                                        }
+                                        trelloCards.remove(j);
+                                        j--;
+                                        break;
+                                    }
+                                }
+                            } else {
+                                // insert object to net db, without controlling the callback
+                                if (obj.get(i).getID()!=null){
+                                    // move to current list
+                                    obj.get(i).setType(CardType.TODO.toInt());
+                                    updateCard(obj.get(i), new Callback<TrelloCard>() {
+                                        @Override
+                                        public void success(TrelloCard trelloCard, Response response) {
+
+                                        }
+
+                                        @Override
+                                        public void failure(RetrofitError error) {
+
+                                        }
+                                    });
+                                }else
+                                    putCard(obj.get(i), createUpdateCallback(obj.get(i)));
+                            }
+                        }
+                        for (int i = 0; i < trelloCards.size(); i++) {
+                            removeCard(trelloCards.get(i), new Callback<String>() {
+                                @Override
+                                public void success(String s, Response response) {
+
+                                }
+
+                                @Override
+                                public void failure(RetrofitError error) {
+
+                                }
+                            });
+                            trelloCards.remove(i);
+                            i--;
+                        }
+                        // now trellocards contains only cards that need to be removed from here
+                        afterFinish.onCallback(trelloCards);
+
+                    }
+                });
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                errorCallback.onError();
+            }
+        });
+    }
+
+    private void syncDone(final SimpleCallback<List<TrelloCard>> afterFinish, final SimpleNetworkCallback<?> errorCallback) {
+        getDoneCards(new Callback<List<TrelloCard>>() {
+            @Override
+            public void success(final List<TrelloCard> trelloCards, Response response) {
+                // load local cards
+                CardManager.getInstance().getAllCardsForDoneList(new SimpleCallback<ArrayList<DoneCard>>() {
+                    @Override
+                    public void onCallback(ArrayList<DoneCard> obj) {
+                        for (int i = 0; i < obj.size(); i++) {
+                            if (obj.get(i).getID().length() > 3) {
+                                for (int j = 0; j < trelloCards.size(); j++) {
+                                    if (trelloCards.get(j).getId().equalsIgnoreCase(obj.get(i).getID())) {
+                                        if (obj.get(i).wasModified()) {
+                                            // update
+                                            updateCard(obj.get(i), null);
+                                        }
+                                        trelloCards.remove(j);
+                                        j--;
+                                        break;
+                                    }
+                                }
+                            } else {
+                                // insert object to net db, without controlling the callback
+                                if (obj.get(i).getID()!=null){
+                                    // move to current list
+                                    obj.get(i).setType(CardType.TODO.toInt());
+                                    updateCard(obj.get(i), new Callback<TrelloCard>() {
+                                        @Override
+                                        public void success(TrelloCard trelloCard, Response response) {
+
+                                        }
+
+                                        @Override
+                                        public void failure(RetrofitError error) {
+
+                                        }
+                                    });
+                                }else
+                                    putCard(obj.get(i), createUpdateCallback(obj.get(i)));
                             }
                         }
                         for (int i = 0; i < trelloCards.size(); i++) {
@@ -263,119 +392,6 @@ public class NetworkCardProvider implements ErrorHandler, RequestInterceptor, Ne
 
             }
         };
-    }
-
-    private void syncDoing(final List<TrelloCard> leftN, final SimpleCallback<List<TrelloCard>> afterFinish, final SimpleNetworkCallback<?> errorCallback) {
-        getDoingCards(new Callback<List<TrelloCard>>() {
-            @Override
-            public void success(final List<TrelloCard> trelloCards, Response response) {
-                // load local cards
-                CardManager.getInstance().getAllCardsForDoingList(new SimpleCallback<ArrayList<DoingCard>>() {
-                    @Override
-                    public void onCallback(ArrayList<DoingCard> obj) {
-                        for (int i = 0; i < obj.size(); i++) {
-                            if (obj.get(i).getID().length() > 3) {
-                                for (int j = 0; j < trelloCards.size(); j++) {
-                                    if (trelloCards.get(j).getId().equalsIgnoreCase(obj.get(i).getID())) {
-                                        if (obj.get(i).wasModified()) {
-                                            // update
-                                            updateCard(obj.get(i), null);
-                                            atLeastOneInsertedOrModified = true;
-                                        }
-                                        trelloCards.remove(j);
-                                        j--;
-                                    }
-                                }
-                            } else {
-                                // insert object to net db, without controlling the callback
-                                putCard(obj.get(i), createUpdateCallback(obj.get(i)));
-                                atLeastOneInsertedOrModified = true;
-                            }
-                        }
-                        for (int i = 0; i < trelloCards.size(); i++) {
-                            removeCard(trelloCards.get(i), new Callback<String>() {
-                                @Override
-                                public void success(String s, Response response) {
-
-                                }
-
-                                @Override
-                                public void failure(RetrofitError error) {
-
-                                }
-                            });
-                            trelloCards.remove(i);
-                            i--;
-                        }
-
-                        afterFinish.onCallback(trelloCards);
-                    }
-                });
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                errorCallback.onError();
-            }
-        });
-    }
-
-
-    private void syncDone(final List<TrelloCard> leftN, final SimpleCallback<List<TrelloCard>> afterFinish, final SimpleNetworkCallback<?> errorCallback) {
-        getDoneCards(new Callback<List<TrelloCard>>() {
-            @Override
-            public void success(final List<TrelloCard> trelloCards, Response response) {
-                // load local cards
-                CardManager.getInstance().getAllCardsForDoneList(new SimpleCallback<ArrayList<DoneCard>>() {
-                    @Override
-                    public void onCallback(ArrayList<DoneCard> obj) {
-
-                        for (int i = 0; i < obj.size(); i++) {
-                            if (obj.get(i).getID().length() > 3) {
-                                for (int j = 0; j < trelloCards.size(); j++) {
-                                    if (trelloCards.get(j).getId().equalsIgnoreCase(obj.get(i).getID())) {
-                                        if (obj.get(i).wasModified()) {
-                                            // update
-                                            updateCard(obj.get(i), null);
-                                            atLeastOneInsertedOrModified = true;
-                                        }
-                                        trelloCards.remove(j);
-                                        j--;
-                                    }
-                                }
-                            } else {
-                                // insert object to net db, without controlling the callback
-                                putCard(obj.get(i), createUpdateCallback(obj.get(i)));
-                                atLeastOneInsertedOrModified = true;
-                            }
-                        }
-                        // now trellocards contains only cards that need to be removed from here
-                        for (int i = 0; i < trelloCards.size(); i++) {
-                            removeCard(trelloCards.get(i), new Callback<String>() {
-                                @Override
-                                public void success(String s, Response response) {
-
-                                }
-
-                                @Override
-                                public void failure(RetrofitError error) {
-
-                                }
-                            });
-                            trelloCards.remove(i);
-                            i--;
-                        }
-
-                        afterFinish.onCallback(null);
-                    }
-                });
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                errorCallback.onError();
-            }
-        });
     }
 
     @Override

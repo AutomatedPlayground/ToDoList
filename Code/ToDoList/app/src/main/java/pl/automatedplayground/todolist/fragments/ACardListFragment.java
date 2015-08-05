@@ -83,6 +83,7 @@ public abstract class ACardListFragment<DATATYPE extends ICard<?>, DATAPROVIDER 
 
     protected abstract int getTextForHeader();
 
+    // currently this is provided by activity
     @Override
     public void onResume() {
         super.onResume();

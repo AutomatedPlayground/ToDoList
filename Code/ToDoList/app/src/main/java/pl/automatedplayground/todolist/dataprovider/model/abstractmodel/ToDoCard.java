@@ -17,6 +17,7 @@ public class ToDoCard implements ICard<String>, Serializable {
     protected String mID;
     protected int localID;
     protected boolean mModif = false;
+    private int type;
 
     // block for creation
     ToDoCard() {
@@ -71,5 +72,9 @@ public class ToDoCard implements ICard<String>, Serializable {
     @Override
     public String getID() {
         return mID;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

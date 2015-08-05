@@ -21,4 +21,5 @@
     <string name="content">Szczegóły</string>
     <string name="title">Tytuł</string>
     <string name="titletoshort">Tytuł nie może być krótszy niż 3 litery!</string>
+    <string name="action_more">Kliknij by uzyskać szczegóły</string>
 </resources>

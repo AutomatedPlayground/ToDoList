@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int NUM_PAGES = 3; // 3 types of cards
     private static final String KEY_FIRSTRUN = "KEY_FIRST"; // key for first app run
-    private static final boolean DEBUG = true; // switch this off before releasing
 
     @InjectView(R.id.pager)
     protected ViewPager mPager;
@@ -42,14 +41,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
-        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
+//        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         modeLoading.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // just to interfere with background clickable objects
             }
         });
-        mPager.setAdapter(mPagerAdapter);
+//        mPager.setAdapter(mPagerAdapter);
         setLoading(true, true);
         // nice looking but unstable
         //        int margin = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16,     getResources().getDisplayMetrics());
@@ -119,9 +118,7 @@ public class MainActivity extends AppCompatActivity {
      * @return
      */
     private boolean checkFirstRun() {
-        if (DEBUG)
-            return true;
-        SharedPreferences settings = getPreferences(MODE_PRIVATE);
+        SharedPreferences settings = getSharedPreferences("data", MODE_PRIVATE);
         return settings.getBoolean(KEY_FIRSTRUN, true);
     }
 
@@ -130,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
      * Set that first run was completed sucessfully
      */
     private void setFirstRunCompleted() {
-        getPreferences(MODE_PRIVATE).edit().putBoolean(KEY_FIRSTRUN, false).commit();
+        getSharedPreferences("data",MODE_PRIVATE).edit().putBoolean(KEY_FIRSTRUN, false).commit();
     }
 
     @Override

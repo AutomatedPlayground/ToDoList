@@ -122,7 +122,7 @@ public class NetworkCardProvider implements ErrorHandler, RequestInterceptor, Ne
                 list = ConfigFile.API_LIST_TODO;
                 break;
         }
-        apiInterface.updateCard(ConfigFile.API_KEY, card.getID(), card.getTitle(), card.getContent(), list,ConfigFile.API_TOKEN, callback);
+        apiInterface.updateCard(ConfigFile.API_KEY, card.getID(), card.getTitle(), card.getContent(), list, ConfigFile.API_TOKEN, callback);
     }
 
     public void removeCard(TrelloCard card, Callback<String> callback) {
@@ -163,28 +163,28 @@ public class NetworkCardProvider implements ErrorHandler, RequestInterceptor, Ne
                             @Override
                             public void onCallback(final List<TrelloCard> leftCards) {
                                 // left obj are items that should exist in todo or be deleted
-                                CardManager.getInstance().getAllCardsForTODOList(new SimpleCallback<ArrayList<ToDoCard>>() {
-                                    @Override
-                                    public void onCallback(ArrayList<ToDoCard> obj) {
-                                        if (leftCards!=null)
-                                        for (int i = 0; i < leftCards.size(); i++) {
-                                            boolean exists = false;
-                                            if (obj!=null)
-                                            for (int j = 0; j < obj.size(); j++)
-                                                if (obj.get(j).getID().equalsIgnoreCase(leftCards.get(i).getId())) {
-                                                    exists = true;
-                                                    moveCardToOtherList(leftCards.get(i).getId(), CardType.TODO, null);
-                                                    break;
-                                                }
-                                            if (!exists) {
-                                                // to be removed
-                                                removeCard(leftCards.get(i), null);
-                                            }
-                                        }
+//                                CardManager.getInstance().getAllCardsForTODOList(new SimpleCallback<ArrayList<ToDoCard>>() {
+//                                    @Override
+//                                    public void onCallback(ArrayList<ToDoCard> obj) {
+//                                        if (leftCards != null)
+//                                            for (int i = 0; i < leftCards.size(); i++) {
+//                                                boolean exists = false;
+//                                                if (obj != null)
+//                                                    for (int j = 0; j < obj.size(); j++)
+//                                                        if (obj.get(j).getID().equalsIgnoreCase(leftCards.get(i).getId())) {
+//                                                            exists = true;
+//                                                            moveCardToOtherList(leftCards.get(i).getId(), CardType.TODO, null);
+//                                                            break;
+//                                                        }
+//                                                if (!exists) {
+//                                                    // to be removed
+//                                                    removeCard(leftCards.get(i), null);
+//                                                }
+//                                            }
                                         // final callback ;)
                                         callback.onCallback(null);
-                                    }
-                                });
+//                                    }
+//                                });
                             }
                         }, callback);
                     }
@@ -213,6 +213,7 @@ public class NetworkCardProvider implements ErrorHandler, RequestInterceptor, Ne
                                         }
                                         trelloCards.remove(j);
                                         j--;
+                                        break;
                                     }
                                 }
                             } else {
@@ -220,6 +221,21 @@ public class NetworkCardProvider implements ErrorHandler, RequestInterceptor, Ne
                                 putCard(obj.get(i), createUpdateCallback(obj.get(i)));
                                 atLeastOneInsertedOrModified = true;
                             }
+                        }
+                        for (int i = 0; i < trelloCards.size(); i++) {
+                            removeCard(trelloCards.get(i), new Callback<String>() {
+                                @Override
+                                public void success(String s, Response response) {
+
+                                }
+
+                                @Override
+                                public void failure(RetrofitError error) {
+
+                                }
+                            });
+                            trelloCards.remove(i);
+                            i--;
                         }
                         // now trellocards contains only cards that need to be removed from here
                         afterFinish.onCallback(trelloCards);
@@ -239,7 +255,7 @@ public class NetworkCardProvider implements ErrorHandler, RequestInterceptor, Ne
         return new Callback<TrelloCard>() {
             @Override
             public void success(TrelloCard trelloCard, Response response) {
-                CardManager.getInstance().updateWebID(toDoCard.getLocalID(),trelloCard.getId());
+                CardManager.getInstance().updateWebID(toDoCard.getLocalID(), trelloCard.getId());
             }
 
             @Override
@@ -249,7 +265,7 @@ public class NetworkCardProvider implements ErrorHandler, RequestInterceptor, Ne
         };
     }
 
-    private void syncDoing(final List<TrelloCard> left, final SimpleCallback<List<TrelloCard>> afterFinish, final SimpleNetworkCallback<?> errorCallback) {
+    private void syncDoing(final List<TrelloCard> leftN, final SimpleCallback<List<TrelloCard>> afterFinish, final SimpleNetworkCallback<?> errorCallback) {
         getDoingCards(new Callback<List<TrelloCard>>() {
             @Override
             public void success(final List<TrelloCard> trelloCards, Response response) {
@@ -257,16 +273,6 @@ public class NetworkCardProvider implements ErrorHandler, RequestInterceptor, Ne
                 CardManager.getInstance().getAllCardsForDoingList(new SimpleCallback<ArrayList<DoingCard>>() {
                     @Override
                     public void onCallback(ArrayList<DoingCard> obj) {
-                        for (int i = 0; i < left.size(); i++) {
-                            for (int j = 0; j < obj.size(); j++)
-                                if (obj.get(j).getID().equalsIgnoreCase(left.get(i).getId())) {
-                                    // move here
-                                    moveCardToOtherList(left.get(i).getId(), CardType.DOING, null);
-                                    left.remove(i);
-                                    i--;
-                                    break;
-                                }
-                        }
                         for (int i = 0; i < obj.size(); i++) {
                             if (obj.get(i).getID().length() > 3) {
                                 for (int j = 0; j < trelloCards.size(); j++) {
@@ -286,7 +292,22 @@ public class NetworkCardProvider implements ErrorHandler, RequestInterceptor, Ne
                                 atLeastOneInsertedOrModified = true;
                             }
                         }
-                        trelloCards.addAll(left);
+                        for (int i = 0; i < trelloCards.size(); i++) {
+                            removeCard(trelloCards.get(i), new Callback<String>() {
+                                @Override
+                                public void success(String s, Response response) {
+
+                                }
+
+                                @Override
+                                public void failure(RetrofitError error) {
+
+                                }
+                            });
+                            trelloCards.remove(i);
+                            i--;
+                        }
+
                         afterFinish.onCallback(trelloCards);
                     }
                 });
@@ -300,7 +321,7 @@ public class NetworkCardProvider implements ErrorHandler, RequestInterceptor, Ne
     }
 
 
-    private void syncDone(final List<TrelloCard> left, final SimpleCallback<List<TrelloCard>> afterFinish, final SimpleNetworkCallback<?> errorCallback) {
+    private void syncDone(final List<TrelloCard> leftN, final SimpleCallback<List<TrelloCard>> afterFinish, final SimpleNetworkCallback<?> errorCallback) {
         getDoneCards(new Callback<List<TrelloCard>>() {
             @Override
             public void success(final List<TrelloCard> trelloCards, Response response) {
@@ -308,16 +329,6 @@ public class NetworkCardProvider implements ErrorHandler, RequestInterceptor, Ne
                 CardManager.getInstance().getAllCardsForDoneList(new SimpleCallback<ArrayList<DoneCard>>() {
                     @Override
                     public void onCallback(ArrayList<DoneCard> obj) {
-                        for (int i = 0; i < left.size(); i++) {
-                            for (int j = 0; j < obj.size(); j++)
-                                if (obj.get(j).getID().equalsIgnoreCase(left.get(i).getId())) {
-                                    // move here
-                                    moveCardToOtherList(left.get(i).getId(), CardType.DONE, null);
-                                    left.remove(i);
-                                    i--;
-                                    break;
-                                }
-                        }
 
                         for (int i = 0; i < obj.size(); i++) {
                             if (obj.get(i).getID().length() > 3) {
@@ -339,8 +350,22 @@ public class NetworkCardProvider implements ErrorHandler, RequestInterceptor, Ne
                             }
                         }
                         // now trellocards contains only cards that need to be removed from here
+                        for (int i = 0; i < trelloCards.size(); i++) {
+                            removeCard(trelloCards.get(i), new Callback<String>() {
+                                @Override
+                                public void success(String s, Response response) {
 
-                        trelloCards.addAll(left);
+                                }
+
+                                @Override
+                                public void failure(RetrofitError error) {
+
+                                }
+                            });
+                            trelloCards.remove(i);
+                            i--;
+                        }
+
                         afterFinish.onCallback(null);
                     }
                 });

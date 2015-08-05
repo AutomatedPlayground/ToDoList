@@ -95,6 +95,7 @@ public class CardManager implements CardFactoryInterface {
         object.setContent(newContent);
         object.setID(newNetID);
         realm.commitTransaction();
+        realm.refresh();
         return true;
     }
 
@@ -114,7 +115,10 @@ public class CardManager implements CardFactoryInterface {
         RealmCard object = objs.findFirst();
         object.setType(newList.toInt());
         object.setModified(1);
+        // bug around fix - api dont work well with transferring cards, so instead we just remove and create new one
+        object.setID("");
         realm.commitTransaction();
+        realm.refresh();
         return true;
     }
 
@@ -137,6 +141,7 @@ public class CardManager implements CardFactoryInterface {
         object.setType(type.toInt());
         object.setLocalID((int) (realm.where(RealmCard.class).maximumInt("localID") + 1));
         realm.commitTransaction();
+        realm.refresh();
         return object.getLocalID();
     }
 
@@ -154,6 +159,7 @@ public class CardManager implements CardFactoryInterface {
             return false;
         objs.findFirst().removeFromRealm();
         realm.commitTransaction();
+        realm.refresh();
         return true;
     }
 
@@ -229,5 +235,6 @@ public class CardManager implements CardFactoryInterface {
         RealmCard object = objs.findFirst();
         object.setID(id);
         realm.commitTransaction();
+        realm.refresh();
     }
 }

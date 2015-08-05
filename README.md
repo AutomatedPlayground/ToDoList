@@ -20,3 +20,4 @@
 #Run requirements
 - Android device with unlocked 'external sources' for installation purposes
 - At least device with Android ICS (4.0+)
+- Url for testing release: https://github.com/AutomatedPlayground/ToDoList/blob/master/Docs/app-release.apk

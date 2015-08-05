@@ -8,6 +8,7 @@ import android.util.Log;
 
 import java.util.List;
 
+import pl.automatedplayground.todolist.base.interfaces.NetworkCardProviderInterface;
 import pl.automatedplayground.todolist.configuration.ConfigFile;
 import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.DoingCard;
 import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.DoneCard;
@@ -22,7 +23,7 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.android.AndroidLog;
 
-public class NetworkCardProvider implements ErrorHandler, RequestInterceptor {
+public class NetworkCardProvider implements ErrorHandler, RequestInterceptor,NetworkCardProviderInterface {
     private static final String API_URL = "https://api.trello.com";
     private static NetworkCardProvider ourInstance = new NetworkCardProvider();
     private ApiInterface apiInterface;
@@ -30,7 +31,7 @@ public class NetworkCardProvider implements ErrorHandler, RequestInterceptor {
     private NetworkCardProvider() {
     }
 
-    public static NetworkCardProvider getInstance() {
+    public static NetworkCardProviderInterface getInstance() {
         return ourInstance;
     }
 
@@ -100,5 +101,18 @@ public class NetworkCardProvider implements ErrorHandler, RequestInterceptor {
     public void updateCard(ICard<String> card, Callback<TrelloCard> callback) {
 //        apiInterface
 //        apiInterface.updateCardData(Config)
+    }
+
+
+    @Override
+    public void synchronizeCards(SimpleNetworkCallback<String> callback) {
+        // TODO: write this
+        callback.onCallback(null);
+    }
+
+    @Override
+    public void initialSyncFromServer(SimpleNetworkCallback<String> callback) {
+// TODO: write this
+        callback.onCallback(null);
     }
 }

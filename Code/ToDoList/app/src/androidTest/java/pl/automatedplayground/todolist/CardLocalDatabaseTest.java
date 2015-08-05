@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import io.realm.Realm;
 import pl.automatedplayground.todolist.base.interfaces.SimpleCallback;
-import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.CardFactory;
+import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.CardManager;
 import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.CardType;
 import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.DoneCard;
 import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.ICard;
@@ -34,7 +34,7 @@ public class CardLocalDatabaseTest extends ApplicationTestCase<Application> {
         String title = "title";
         String desc = "desc";
         CardType type = CardType.TODO;
-        ((CardFactory) CardFactory.getInstance()).setContext(getContext());
+        ((CardManager) CardManager.getInstance()).setContext(getContext());
 
         // clear all database
         Realm realm = Realm.getInstance(getContext());
@@ -42,12 +42,12 @@ public class CardLocalDatabaseTest extends ApplicationTestCase<Application> {
         realm.clear(RealmCard.class);
         realm.commitTransaction();
 
-        CardFactory.getInstance().createNewCard(title, desc, type, new SimpleCallback<ICard<String>>() {
+        CardManager.getInstance().createNewCard(title, desc, type, new SimpleCallback<ICard<String>>() {
             @Override
             public void onCallback(ICard<String> obj) {
                 final int localID = obj.getLocalID();
                 // get local card using getter
-                CardFactory.getInstance().getAllCardsForTODOList(new SimpleCallback<ArrayList<ToDoCard>>() {
+                CardManager.getInstance().getAllCardsForTODOList(new SimpleCallback<ArrayList<ToDoCard>>() {
                     @Override
                     public void onCallback(ArrayList<ToDoCard> obj) {
                         if (obj.size() == 0)
@@ -66,7 +66,7 @@ public class CardLocalDatabaseTest extends ApplicationTestCase<Application> {
         String title = "title";
         String desc = "desc";
         CardType type = CardType.TODO;
-        ((CardFactory) CardFactory.getInstance()).setContext(getContext());
+        ((CardManager) CardManager.getInstance()).setContext(getContext());
 
         // clear all database
         Realm realm = Realm.getInstance(getContext());
@@ -74,19 +74,19 @@ public class CardLocalDatabaseTest extends ApplicationTestCase<Application> {
         realm.clear(RealmCard.class);
         realm.commitTransaction();
 
-        CardFactory.getInstance().createNewCard(title, desc, type, new SimpleCallback<ICard<String>>() {
+        CardManager.getInstance().createNewCard(title, desc, type, new SimpleCallback<ICard<String>>() {
             @Override
             public void onCallback(ICard<String> obj) {
                 final int localID = obj.getLocalID();
                 // get local card using getter
-                CardFactory.getInstance().getAllCardsForTODOList(new SimpleCallback<ArrayList<ToDoCard>>() {
+                CardManager.getInstance().getAllCardsForTODOList(new SimpleCallback<ArrayList<ToDoCard>>() {
                     @Override
                     public void onCallback(ArrayList<ToDoCard> obj) {
-                        CardFactory.getInstance().removeCard(CardFactory.getInstance().getCardByLocalID(localID), new SimpleCallback<Boolean>() {
+                        CardManager.getInstance().removeCard(CardManager.getInstance().getCardByLocalID(localID), new SimpleCallback<Boolean>() {
                             @Override
                             public void onCallback(Boolean obj) {
                                 // now check if data is really removed
-                                assertNull(CardFactory.getInstance().getCardByLocalID(localID));
+                                assertNull(CardManager.getInstance().getCardByLocalID(localID));
                                 // and return statement
                                 assertEquals(Boolean.TRUE, obj);
                             }
@@ -104,7 +104,7 @@ public class CardLocalDatabaseTest extends ApplicationTestCase<Application> {
         String title = "title";
         String desc = "desc";
         CardType type = CardType.TODO;
-        ((CardFactory) CardFactory.getInstance()).setContext(getContext());
+        ((CardManager) CardManager.getInstance()).setContext(getContext());
 
         // clear all database
         Realm realm = Realm.getInstance(getContext());
@@ -112,20 +112,20 @@ public class CardLocalDatabaseTest extends ApplicationTestCase<Application> {
         realm.clear(RealmCard.class);
         realm.commitTransaction();
 
-        CardFactory.getInstance().createNewCard(title, desc, type, new SimpleCallback<ICard<String>>() {
+        CardManager.getInstance().createNewCard(title, desc, type, new SimpleCallback<ICard<String>>() {
             @Override
             public void onCallback(ICard<String> obj) {
                 final int localID = obj.getLocalID();
-                CardFactory.getInstance().changeCardType(CardFactory.getInstance().getCardByLocalID(localID), CardType.DONE, new SimpleCallback<ICard<String>>() {
+                CardManager.getInstance().changeCardType(CardManager.getInstance().getCardByLocalID(localID), CardType.DONE, new SimpleCallback<ICard<String>>() {
                     @Override
                     public void onCallback(ICard<String> obj) {
-                        CardFactory.getInstance().getAllCardsForDoneList(new SimpleCallback<ArrayList<DoneCard>>() {
+                        CardManager.getInstance().getAllCardsForDoneList(new SimpleCallback<ArrayList<DoneCard>>() {
                             @Override
                             public void onCallback(ArrayList<DoneCard> obj) {
                                 assertEquals(obj.get(0).getLocalID(), localID);
 
                                 // also check if card is deleted from origin list
-                                CardFactory.getInstance().getAllCardsForTODOList(new SimpleCallback<ArrayList<ToDoCard>>() {
+                                CardManager.getInstance().getAllCardsForTODOList(new SimpleCallback<ArrayList<ToDoCard>>() {
                                     @Override
                                     public void onCallback(ArrayList<ToDoCard> obj) {
                                         assertTrue(obj == null || obj.size() == 0);
@@ -150,7 +150,7 @@ public class CardLocalDatabaseTest extends ApplicationTestCase<Application> {
         final String desc = "desc";
         final String desc2 = "desc2";
         CardType type = CardType.TODO;
-        ((CardFactory) CardFactory.getInstance()).setContext(getContext());
+        ((CardManager) CardManager.getInstance()).setContext(getContext());
 
         // clear all database
         Realm realm = Realm.getInstance(getContext());
@@ -158,20 +158,20 @@ public class CardLocalDatabaseTest extends ApplicationTestCase<Application> {
         realm.clear(RealmCard.class);
         realm.commitTransaction();
 
-        CardFactory.getInstance().createNewCard(title, desc, type, new SimpleCallback<ICard<String>>() {
+        CardManager.getInstance().createNewCard(title, desc, type, new SimpleCallback<ICard<String>>() {
             @Override
             public void onCallback(ICard<String> obj) {
                 final int localID = obj.getLocalID();
                 // get local card using getter
-                ToDoCard source = (ToDoCard) CardFactory.getInstance().getCardByLocalID(localID);
+                ToDoCard source = (ToDoCard) CardManager.getInstance().getCardByLocalID(localID);
                 assertEquals(source.getTitle(),title);
                 assertEquals(source.getContent(),desc);
                 source.setData(localID,title2,desc2,"");
-                CardFactory.getInstance().changeCardData(source, new SimpleCallback<ICard<String>>() {
+                CardManager.getInstance().changeCardData(source, new SimpleCallback<ICard<String>>() {
                     @Override
                     public void onCallback(ICard<String> obj) {
                         // now get object from db and check names
-                        ToDoCard changedCard = (ToDoCard) CardFactory.getInstance().getCardByLocalID(localID);
+                        ToDoCard changedCard = (ToDoCard) CardManager.getInstance().getCardByLocalID(localID);
                         assertEquals(changedCard.getTitle(),title2);
                         assertEquals(changedCard.getContent(),desc2);
                     }

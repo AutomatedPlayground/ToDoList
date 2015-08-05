@@ -2,14 +2,13 @@ package pl.automatedplayground.todolist.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -30,10 +29,12 @@ public abstract class ACardListFragment<DATATYPE extends ICard<?>, DATAPROVIDER 
 
     @InjectView(R.id.listview)
     RecyclerView mListView;
-    @InjectView(R.id.refresh_layout)
-    SwipeRefreshLayout mRefresh;
+    //    @InjectView(R.id.refresh_layout)
+//    SwipeRefreshLayout mRefresh;
     @InjectView(R.id.addbutton)
     ImageView mAddButton;
+    @InjectView(R.id.header)
+    TextView mHeader;
 
     DATAPROVIDER mDataProvider;
 
@@ -44,45 +45,43 @@ public abstract class ACardListFragment<DATATYPE extends ICard<?>, DATAPROVIDER 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
+        view.setBackgroundColor(getBackgroundColor());
         ButterKnife.inject(this, view);
         mListView.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         mListView.setLayoutManager(llm);
+        mHeader.setText(getTextForHeader());
         mDataProvider = createDataProvider();
         mListView.setAdapter(new CardRecyclerViewAdapter(mDataProvider, this));
+        mAddButton.setVisibility(isAddAvaiable() ? View.VISIBLE : View.INVISIBLE);
+        mAddButton.setOnClickListener(createOnAddClicked());
 
+        mDataProvider.refreshData(new SimpleCallback<ArrayList<DATATYPE>>() {
 
-        mRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onRefresh() {
-                mDataProvider.refreshData(new SimpleCallback<ArrayList<DATATYPE>>() {
-
+            public void onCallback(final ArrayList<DATATYPE> obj) {
+                // it need to be done on ui thread
+                mListView.post(new Runnable() {
                     @Override
-                    public void onCallback(final ArrayList<DATATYPE> obj) {
-                        // it need to be done on ui thread
-                        mListView.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (obj == null)
-                                    Toast.makeText(getActivity(), R.string.hello_world, Toast.LENGTH_SHORT).show();
-                                else {
-                                    ((CardRecyclerViewAdapter) mListView.getAdapter()).setData(obj);
-                                    mListView.getAdapter().notifyDataSetChanged();
-                                }
-                                mRefresh.setRefreshing(false);
-                            }
-                        });
+                    public void run() {
+                        if (obj == null)
+                            ;
+                        else {
+                            ((CardRecyclerViewAdapter) mListView.getAdapter()).setData(obj);
+                            mListView.getAdapter().notifyDataSetChanged();
+                        }
+//                        mRefresh.setRefreshing(false);
                     }
                 });
             }
         });
-
-        mAddButton.setVisibility(isAddAvaiable() ? View.VISIBLE : View.INVISIBLE);
-        mAddButton.setOnClickListener(createOnAddClicked());
-
         return view;
     }
+
+    protected abstract int getBackgroundColor();
+
+    protected abstract int getTextForHeader();
 
     @Override
     public void onResume() {
@@ -96,12 +95,12 @@ public abstract class ACardListFragment<DATATYPE extends ICard<?>, DATAPROVIDER 
                     @Override
                     public void run() {
                         if (obj == null)
-                            Toast.makeText(getActivity(), R.string.hello_world, Toast.LENGTH_SHORT).show();
+                            ;
                         else {
                             ((CardRecyclerViewAdapter) mListView.getAdapter()).setData(obj);
                             mListView.getAdapter().notifyDataSetChanged();
                         }
-                        mRefresh.setRefreshing(false);
+//                        mRefresh.setRefreshing(false);
                     }
                 });
             }

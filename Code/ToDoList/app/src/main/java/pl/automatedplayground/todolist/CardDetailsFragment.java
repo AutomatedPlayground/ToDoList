@@ -17,13 +17,10 @@ import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import pl.automatedplayground.todolist.base.interfaces.SimpleCallback;
-import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.CardFactory;
+import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.CardManager;
 import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.CardType;
 import pl.automatedplayground.todolist.dataprovider.model.abstractmodel.ICard;
 
-/**
- * A placeholder fragment containing a simple view.
- */
 public class CardDetailsFragment extends Fragment {
 
     @InjectView(R.id.card_title)
@@ -110,7 +107,7 @@ public class CardDetailsFragment extends Fragment {
     }
 
 
-    private void bindData(ICard<String> card) {
+    private void bindData(final ICard<String> card) {
         cardTitle.setText(card.getTitle());
         cardTitleEditable.setText(card.getTitle());
         cardContent.setText(card.getContent());
@@ -126,18 +123,74 @@ public class CardDetailsFragment extends Fragment {
             action2.setText(R.string.card_todo_to_doing);
             action1.setVisibility(View.INVISIBLE);
             action2.setVisibility(View.VISIBLE);
+            action1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+            action2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    updateCard(CardType.DOING);
+                }
+            });
         } else if (card.getType() == CardType.DOING) {
             action2.setText(R.string.card_doing_to_done);
             action1.setText(R.string.card_doing_to_todo);
             action1.setVisibility(View.VISIBLE);
             action2.setVisibility(View.VISIBLE);
-        } else if (card.getType() == CardType.TODO) {
+            action2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    updateCard(CardType.DONE);
+                }
+            });
+            action1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    updateCard(CardType.TODO);
+                }
+            });
+        } else if (card.getType() == CardType.DONE) {
             action1.setText(R.string.card_done_to_doing);
             action1.setVisibility(View.VISIBLE);
             action2.setVisibility(View.INVISIBLE);
+            action1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    updateCard(CardType.DOING);
+                }
+            });
+            action2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
         }
 
         getActivity().invalidateOptionsMenu();
+    }
+
+    /**
+     * Change list for card
+     *
+     * @param willingMode
+     */
+    private void updateCard(final CardType willingMode) {
+        CardManager.getInstance().changeCardType(localCard, willingMode, new SimpleCallback<ICard<String>>() {
+            @Override
+            public void onCallback(ICard<String> obj) {
+                localCard = obj;
+                getView().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        bindData(localCard);
+                    }
+                });
+            }
+        });
     }
 
     private void edit() {
@@ -164,10 +217,10 @@ public class CardDetailsFragment extends Fragment {
         if (localCard != null) {
             // change card data
             localCard.setData(localCard.getLocalID(), cardTitleEditable.getText().toString(), cardContentEditable.getText().toString(), localCard.getID());
-            CardFactory.getInstance().changeCardData(localCard, null);
+            CardManager.getInstance().changeCardData(localCard, null);
         } else {
             // create new card
-            CardFactory.getInstance().createNewCard(cardTitleEditable.getText().toString(), cardContentEditable.getText().toString(), newCardType, null);
+            CardManager.getInstance().createNewCard(cardTitleEditable.getText().toString(), cardContentEditable.getText().toString(), newCardType, null);
             getActivity().finish();
         }
 
@@ -185,7 +238,7 @@ public class CardDetailsFragment extends Fragment {
      */
     private void remove() {
         hideKeyboard();
-        CardFactory.getInstance().removeCard(localCard, new SimpleCallback<Boolean>() {
+        CardManager.getInstance().removeCard(localCard, new SimpleCallback<Boolean>() {
             @Override
             public void onCallback(Boolean obj) {
                 getActivity().finish();

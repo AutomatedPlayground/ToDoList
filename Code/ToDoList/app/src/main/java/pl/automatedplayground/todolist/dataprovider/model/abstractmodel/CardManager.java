@@ -15,14 +15,14 @@ import pl.automatedplayground.todolist.base.interfaces.SimpleCallback;
 import pl.automatedplayground.todolist.dataprovider.model.CardFactoryInterface;
 import pl.automatedplayground.todolist.dataprovider.model.realmmodel.RealmCard;
 
-public class CardFactory implements CardFactoryInterface {
-    static private CardFactory mInstance = null;
+public class CardManager implements CardFactoryInterface {
+    static private CardManager mInstance = null;
     Context mContext;
 
 
     public static CardFactoryInterface getInstance() {
         if (mInstance == null)
-            mInstance = new CardFactory();
+            mInstance = new CardManager();
         return mInstance;
     }
 
@@ -30,7 +30,7 @@ public class CardFactory implements CardFactoryInterface {
         mContext = ctx;
     }
 
-    private CardFactory() {
+    private CardManager() {
         // hiding constructor
     }
 

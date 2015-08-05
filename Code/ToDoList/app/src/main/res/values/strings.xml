@@ -1,7 +1,6 @@
 <resources>
-    <string name="app_name">ToDoList</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name">My work list</string>
+    <string name="action_sync">Synchronize</string>
     <string name="action_more">Click for more</string>
     <string name="action_remove">Remove</string>
     <string name="title_activity_card_details">CardDetails</string>
@@ -13,4 +12,9 @@
     <string name="card_doing_to_todo">Cancel doing</string>
     <string name="card_doing_to_done">Finish</string>
     <string name="card_done_to_doing">Start again</string>
+    <string name="error_network">Network error occured, please try again.</string>
+    <string name="header_todo">Todo</string>
+    <string name="header_doing">Doing</string>
+    <string name="header_done">Done</string>
+
 </resources>

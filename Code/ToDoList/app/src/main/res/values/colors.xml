@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color_todo">#dddddd</color>
+    <color name="color_doing">#FFFFE0</color>
+    <color name="color_done">#adddad</color>
+</resources>
